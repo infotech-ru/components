@@ -1,7 +1,14 @@
 {
   "name": "infotech/components",
   "require": {
-    "php": ">=7.3.0"
+    "php": ">=7.3.0",
+    "ext-curl": "*",
+    "ext-json": "*",
+    "phpoffice/phpspreadsheet": "^1.22",
+    "yiisoft/yii2": "^2.0"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-master"
   },
   "autoload": {
     "psr-4": {
