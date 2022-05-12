@@ -15,7 +15,6 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Writer\Exception as WriterException;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use RuntimeException;
-use yii\helpers\ArrayHelper;
 
 class ExcelHelper
 {
@@ -23,7 +22,7 @@ class ExcelHelper
      * @param $data
      * @return Spreadsheet
      */
-    public static function getSpreadsheet($data): Spreadsheet
+    public static function getSpreadsheet(array $data): Spreadsheet
     {
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()->setCreated(time());
@@ -40,23 +39,23 @@ class ExcelHelper
     }
 
     /**
-     * @param Spreadsheet $pExcel
-     * @param             $filename
+     * @param Spreadsheet $excel
+     * @param $filename
      * @throws WriterException
      */
-    public static function saveExcelFile(Spreadsheet $pExcel, $filename): void
+    public static function saveExcelFile(Spreadsheet $excel, $filename): void
     {
-        $writer = new Xlsx($pExcel);
+        $writer = new Xlsx($excel);
         $writer->save($filename);
     }
 
     /**
      * @param Worksheet $sheet
-     * @param                    $data
+     * @param array $data
      * @param int $row
      * @throws Exception
      */
-    public static function fillSheetFromData(Worksheet $sheet, $data, &$row = 1): void
+    public static function fillSheetFromData(Worksheet $sheet, array $data, &$row = 1): void
     {
         foreach (array_values($data['headers']) as $col => $header) {
             $cell = $sheet->getCellByColumnAndRow($col + 1, $row);
@@ -125,19 +124,19 @@ class ExcelHelper
                 }
 
                 switch (true) {
-                    case ArrayHelper::isIn($itemCode, $datetimeColumns):
+                    case in_array($itemCode, $datetimeColumns):
                         $value = Date::PHPToExcel($value);
                         $format = 'dd.mm.yyyy hh:mm';
                         break;
-                    case ArrayHelper::isIn($itemCode, $dateColumns):
+                    case in_array($itemCode, $dateColumns):
                         $value = Date::PHPToExcel($value);
                         $format = 'dd.mm.yyyy';
                         break;
-                    case ArrayHelper::isIn($itemCode, $yearMonthColumns):
+                    case in_array($itemCode, $yearMonthColumns):
                         $value = Date::PHPToExcel($value);
                         $format = 'mmmm yyyy';
                         break;
-                    case !ArrayHelper::isIn($itemCode, $notFormulaColumns):
+                    case !in_array($itemCode, $notFormulaColumns):
                         if (is_int($value)) {
                             $format = NumberFormat::FORMAT_NUMBER;
                         } elseif (is_float($value)) {
@@ -158,10 +157,10 @@ class ExcelHelper
                         ->getNumberFormat()
                         ->setFormatCode($format);
                 }
-                if (ArrayHelper::isIn($itemCode, $multilineColumns)) {
+                if (in_array($itemCode, $multilineColumns)) {
                     $cellStyle->getAlignment()->setWrapText(true);
                 }
-                if (ArrayHelper::isIn($itemCode, $notFormulaColumns)) {
+                if (in_array($itemCode, $notFormulaColumns)) {
                     $cellStyle->setQuotePrefix(true);
                 }
             }
@@ -176,7 +175,7 @@ class ExcelHelper
             if (!$column) {
                 throw new RuntimeException();
             }
-            if (!ArrayHelper::isIn($itemCode, $multilineColumns)) {
+            if (!in_array($itemCode, $multilineColumns)) {
                 $column->setAutoSize(true);
             } else {
                 $column->setWidth(60);
@@ -215,16 +214,26 @@ class ExcelHelper
     }
 
     /**
-     * @param $data
+     * @param array $data
      * @param $fileName
      * @throws Exception
      * @throws WriterException
      */
-    public static function getRenderedExcel($data, $fileName)
+    public static function getRenderedExcel(array $data, $fileName): void
     {
         $excel = ExcelHelper::getSpreadsheet($data);
         $excel->removeSheetByIndex(0);
-        if (ArrayHelper::isAssociative($data)) {
+
+        $isAssociative = false;
+        foreach ($data as $key => $value) {
+            if (!is_string($key)) {
+                continue;
+            }
+            $isAssociative = true;
+            break;
+        }
+
+        if ($isAssociative) {
             $data = [$data];
         }
         $activeSheetIndex = null;
