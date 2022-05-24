@@ -15,6 +15,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Writer\Exception as WriterException;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use RuntimeException;
+use yii\helpers\ArrayHelper;
 
 class ExcelHelper
 {
@@ -95,6 +96,7 @@ class ExcelHelper
         $dateColumns = $data['options']['date'] ?? [];
         $yearMonthColumns = $data['options']['yearMonth'] ?? [];
         $notFormulaColumns = $data['options']['notFormula'] ?? [];
+        $percentColumns = ArrayHelper::getValue($data, 'options.percent', []);
         $codes = array_keys($data['headers']);
         // fixed using generator
         $rows = is_array($data['rows']) ? array_values($data['rows']) : $data['rows'];
@@ -135,6 +137,15 @@ class ExcelHelper
                     case in_array($itemCode, $yearMonthColumns):
                         $value = Date::PHPToExcel($value);
                         $format = 'mmmm yyyy';
+                        break;
+                    case ArrayHelper::isIn($itemCode, $percentColumns):
+                        if (is_int($value)) {
+                            $format = NumberFormat::FORMAT_PERCENTAGE;
+                        } elseif (is_float($value)) {
+                            $format = NumberFormat::FORMAT_PERCENTAGE_00;
+                        } else {
+                            $format = null;
+                        }
                         break;
                     case !in_array($itemCode, $notFormulaColumns):
                         if (is_int($value)) {
