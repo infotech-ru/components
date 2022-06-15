@@ -15,12 +15,11 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Writer\Exception as WriterException;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use RuntimeException;
-use yii\helpers\ArrayHelper;
 
 class ExcelHelper
 {
     /**
-     * @param $data
+     * @param array $data
      * @return Spreadsheet
      */
     public static function getSpreadsheet(array $data): Spreadsheet
@@ -28,12 +27,12 @@ class ExcelHelper
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()->setCreated(time());
 
-        if ($data['title'] ?? null) {
-            $spreadsheet->getProperties()->setTitle($data['title']);
+        if ($title = ($data['title'] ?? null)) {
+            $spreadsheet->getProperties()->setTitle($title);
         }
 
-        if ($data['company'] ?? null) {
-            $spreadsheet->getProperties()->setCompany($data['company']);
+        if ($company = ($data['company'] ?? null)) {
+            $spreadsheet->getProperties()->setCompany($company);
         }
 
         return $spreadsheet;
@@ -60,9 +59,6 @@ class ExcelHelper
     {
         foreach (array_values($data['headers']) as $col => $header) {
             $cell = $sheet->getCellByColumnAndRow($col + 1, $row);
-            if (!$cell) {
-                throw new RuntimeException();
-            }
             $cell->setValue($header);
             $cell->getStyle()->applyFromArray(
                 [
@@ -96,7 +92,7 @@ class ExcelHelper
         $dateColumns = $data['options']['date'] ?? [];
         $yearMonthColumns = $data['options']['yearMonth'] ?? [];
         $notFormulaColumns = $data['options']['notFormula'] ?? [];
-        $percentColumns = ArrayHelper::getValue($data, 'options.percent', []);
+        $percentColumns = $data['options']['percent'] ?? [];
         $codes = array_keys($data['headers']);
         // fixed using generator
         $rows = is_array($data['rows']) ? array_values($data['rows']) : $data['rows'];
@@ -121,10 +117,6 @@ class ExcelHelper
                 }
 
                 $cell = $sheet->getCellByColumnAndRow($col + 1, $row);
-                if (!$cell) {
-                    continue;
-                }
-
                 switch (true) {
                     case in_array($itemCode, $datetimeColumns):
                         $value = Date::PHPToExcel($value);
@@ -138,7 +130,7 @@ class ExcelHelper
                         $value = Date::PHPToExcel($value);
                         $format = 'mmmm yyyy';
                         break;
-                    case ArrayHelper::isIn($itemCode, $percentColumns):
+                    case in_array($itemCode, $percentColumns):
                         if (is_int($value)) {
                             $format = NumberFormat::FORMAT_PERCENTAGE;
                         } elseif (is_float($value)) {
@@ -207,7 +199,7 @@ class ExcelHelper
             $sheet->setTitle($title);
         }
 
-        ExcelHelper::fillSheetFromData($sheet, $data);
+        static::fillSheetFromData($sheet, $data);
     }
 
     /**
@@ -232,7 +224,7 @@ class ExcelHelper
      */
     public static function getRenderedExcel(array $data, $fileName): void
     {
-        $excel = ExcelHelper::getSpreadsheet($data);
+        $excel = static::getSpreadsheet($data);
         $excel->removeSheetByIndex(0);
 
         $isAssociative = false;
@@ -248,15 +240,15 @@ class ExcelHelper
             $data = [$data];
         }
         $activeSheetIndex = null;
-        foreach ($data as $index => $datum) {
-            ExcelHelper::addSheet($excel, $datum);
-            if ($data['active'] ?? false) {
+        foreach ($data as $index => $sheetData) {
+            static::addSheet($excel, $sheetData);
+            if ($sheetData['active'] ?? false) {
                 $activeSheetIndex = $index;
             }
         }
         if ($activeSheetIndex !== null) {
             $excel->setActiveSheetIndex($activeSheetIndex);
         }
-        ExcelHelper::saveExcelFile($excel, $fileName);
+        static::saveExcelFile($excel, $fileName);
     }
 }
