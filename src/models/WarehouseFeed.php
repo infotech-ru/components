@@ -31,7 +31,7 @@ class WarehouseFeed
             self::AUTO_RU_V2 => 'Auto.ru V2',
             self::AUTO_SPOT => 'AutoSpot',
             self::AUTO_SPOT_V2 => 'AutoSpot v.2',
-            self::AVITO => 'Auto.ru',
+            self::AVITO => 'Avito',
             self::CAR_COPY => 'Car Copy',
             self::CARS_GURU => 'CarsGuru',
             self::CM_EXPERT => 'CM.Expert',
