@@ -42,45 +42,24 @@ class Service
         ];
     }
 
-    public static function getServiceListName(): array
-    {
-        return [
-            self::SERVICE_ALL_SALE_FRESH => Yii::t('app', 'Sale Fresh'),
-            self::SERVICE_ALL_SALE_PREMIUM => Yii::t('app', 'Sale premium'),
-            self::SERVICE_ALL_SALE_SPECIAL => Yii::t('app', 'Sale special'),
-            self::SERVICE_ALL_SALE_BADGE => Yii::t('app', 'Sale badge'),
-            self::SERVICE_PACKAGE_TURBO => Yii::t('app', 'Turbo'),
-            self::SERVICE_ALL_SALE_ACTIVATE => Yii::t('app', 'Sale activate'),
-
-            self::SERVICE_AVITO_X2_1 => Yii::t('app', 'x2'),
-            self::SERVICE_AVITO_X5_1 => Yii::t('app', 'x5'),
-            self::SERVICE_AVITO_X10_1 => Yii::t('app', 'x10'),
-            self::SERVICE_AVITO_X2_7 => Yii::t('app', 'x2'),
-            self::SERVICE_AVITO_X5_7 => Yii::t('app', 'x5'),
-            self::SERVICE_AVITO_X10_7 => Yii::t('app', 'x10'),
-            self::SERVICE_AVITO_HIGHLIGHT => Yii::t('app', 'Highlight'),
-            self::SERVICE_AVITO_XL => Yii::t('app', 'XL'),
-        ];
-    }
-
     public static function getServiceList(): array
     {
         return [
-            self::SERVICE_ALL_SALE_FRESH => Yii::t('app', 'Поднятие объявления в поиске'),
-            self::SERVICE_ALL_SALE_PREMIUM => Yii::t('app', 'Премиум'),
-            self::SERVICE_ALL_SALE_SPECIAL => Yii::t('app', 'Спецпредложение'),
-            self::SERVICE_ALL_SALE_BADGE => Yii::t('app', 'Стикеры быстрой продажи'),
-            self::SERVICE_PACKAGE_TURBO => Yii::t('app', 'Турбо-продажа'),
-            self::SERVICE_ALL_SALE_ACTIVATE => Yii::t('app', 'Активация'),
+            self::SERVICE_ALL_SALE_FRESH => Yii::t('infotech-components', 'Поднятие объявления в поиске'),
+            self::SERVICE_ALL_SALE_PREMIUM => Yii::t('infotech-components', 'Премиум'),
+            self::SERVICE_ALL_SALE_SPECIAL => Yii::t('infotech-components', 'Спецпредложение'),
+            self::SERVICE_ALL_SALE_BADGE => Yii::t('infotech-components', 'Стикеры быстрой продажи'),
+            self::SERVICE_PACKAGE_TURBO => Yii::t('infotech-components', 'Турбо-продажа'),
+            self::SERVICE_ALL_SALE_ACTIVATE => Yii::t('infotech-components', 'Активация'),
 
-            self::SERVICE_AVITO_X2_1 => Yii::t('app', 'До 2 раз больше просмотров на 1 день'),
-            self::SERVICE_AVITO_X5_1 => Yii::t('app', 'До 5 раз больше просмотров на 1 день'),
-            self::SERVICE_AVITO_X10_1 => Yii::t('app', 'До 10 раз больше просмотров на 1 день'),
-            self::SERVICE_AVITO_X2_7 => Yii::t('app', 'До 2 раз больше просмотров на 7 день'),
-            self::SERVICE_AVITO_X5_7 => Yii::t('app', 'До 5 раз больше просмотров на 7 день'),
-            self::SERVICE_AVITO_X10_7 => Yii::t('app', 'До 10 раз больше просмотров на 7 день'),
-            self::SERVICE_AVITO_HIGHLIGHT => Yii::t('app', 'Выделение объявления'),
-            self::SERVICE_AVITO_XL => Yii::t('app', 'XL-объявление'),
+            self::SERVICE_AVITO_X2_1 => Yii::t('infotech-components', 'До 2 раз больше просмотров на 1 день'),
+            self::SERVICE_AVITO_X5_1 => Yii::t('infotech-components', 'До 5 раз больше просмотров на 1 день'),
+            self::SERVICE_AVITO_X10_1 => Yii::t('infotech-components', 'До 10 раз больше просмотров на 1 день'),
+            self::SERVICE_AVITO_X2_7 => Yii::t('infotech-components', 'До 2 раз больше просмотров на 7 день'),
+            self::SERVICE_AVITO_X5_7 => Yii::t('infotech-components', 'До 5 раз больше просмотров на 7 день'),
+            self::SERVICE_AVITO_X10_7 => Yii::t('infotech-components', 'До 10 раз больше просмотров на 7 день'),
+            self::SERVICE_AVITO_HIGHLIGHT => Yii::t('infotech-components', 'Выделение объявления'),
+            self::SERVICE_AVITO_XL => Yii::t('infotech-components', 'XL-объявление'),
         ];
     }
 
