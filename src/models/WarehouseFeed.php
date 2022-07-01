@@ -24,6 +24,27 @@ class WarehouseFeed
     public const YANDEX_DIRECT = 15;
     public const YANDEX_XML = 16;
 
+    public static function getListDealers(): array
+    {
+        return array_intersect_key(
+            static::getList(),
+            array_flip([
+                static::AUTO_RU,
+                static::AUTO_RU_V2,
+                static::AVITO,
+                static::CARS_GURU,
+                static::DROM_RU,
+                static::EURO_PLAN,
+                static::EXPERT_AVITO,
+                static::LEGO_CAR,
+                static::RAIFFEISEN,
+                static::SBERBANK,
+                static::YANDEX_DIRECT,
+                static::YANDEX_XML,
+            ])
+        );
+    }
+
     public static function getList(): array
     {
         return [
