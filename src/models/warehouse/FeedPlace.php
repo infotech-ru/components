@@ -10,7 +10,7 @@ class FeedPlace
     public const PLACE_AFTER = 2;
 
 
-    public static function getPlaceList(): array
+    public static function getList(): array
     {
         return [
             self::PLACE_BEFORE => Yii::t('infotech-components', 'До описания а/м'),
