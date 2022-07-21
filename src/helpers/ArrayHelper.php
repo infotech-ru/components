@@ -10,37 +10,20 @@ final class ArrayHelper
      * @param array $array
      * @return int
      */
-    public static function depth(array $array): int
+    public static function maxDepth(array $array): int
     {
-        static $depth;
+        $maxDepth = 0;
 
-        $depth ??= 1;
-
-        if (self::arrayIn($array)) {
-            $depth++;
-            foreach ($array as $value) {
-                if (is_array($value) && self::arrayIn($value)) {
-                    self::depth($value);
+        foreach ($array as $value) {
+            if (is_array($value)) {
+                $depth = self::maxDepth($value) + 1;
+                if ($depth > $maxDepth) {
+                    $maxDepth = $depth;
                 }
             }
         }
 
-        return $depth;
-    }
-
-    /**
-     * @param array $array
-     * @return bool
-     */
-    protected static function arrayIn(array $array): bool
-    {
-        foreach ($array as $value) {
-            if (is_array($value)) {
-                return true;
-            }
-        }
-
-        return false;
+        return $maxDepth;
     }
 
     /**

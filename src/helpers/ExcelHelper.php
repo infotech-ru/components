@@ -119,7 +119,7 @@ final class ExcelHelper
 
         $row ??= $startRow;
 
-        $headersDepth = ArrayHelper::depth($headers);
+        $headersDepth = ArrayHelper::maxDepth($headers);
         $headerRow = $row + $headerDepth;
         foreach ($headers as $title => $header) {
             $headerColumn++;
@@ -133,18 +133,20 @@ final class ExcelHelper
                 $headerDepth--;
             } else {
                 $sheet->setCellValueByColumnAndRow($headerColumn, $headerRow, $header);
-                $sheet->mergeCellsByColumnAndRow($headerColumn, $headerRow, $headerColumn, $headerRow + $headersDepth - 1);
+                $sheet->mergeCellsByColumnAndRow($headerColumn, $headerRow, $headerColumn, $headerRow + $headersDepth);
             }
         }
 
-        $lastHeaderRow = $row + $headersDepth - 1;
-        $firstHighestColumn = Coordinate::columnIndexFromString($sheet->getHighestColumn($row));
-        $lastHighestColumn = Coordinate::columnIndexFromString($sheet->getHighestColumn($lastHeaderRow));
-        $sheet
-            ->getStyleByColumnAndRow($startColumn, $row, max($firstHighestColumn, $lastHighestColumn), $lastHeaderRow)
-            ->applyFromArray(self::HEADER_STYLE);
+        if ($headerDepth === 0) {
+            $lastHeaderRow = $row + $headersDepth;
+            $firstHighestColumn = Coordinate::columnIndexFromString($sheet->getHighestColumn($row));
+            $lastHighestColumn = Coordinate::columnIndexFromString($sheet->getHighestColumn($lastHeaderRow));
+            $sheet
+                ->getStyleByColumnAndRow($startColumn, $row, max($firstHighestColumn, $lastHighestColumn), $lastHeaderRow)
+                ->applyFromArray(self::HEADER_STYLE);
 
-        $startRow = $lastHeaderRow;
+            $startRow = $lastHeaderRow;
+        }
     }
 
     /**
