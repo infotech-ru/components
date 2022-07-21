@@ -2,7 +2,9 @@
 
 namespace infotech\components\helpers;
 
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Exception;
+use PhpOffice\PhpSpreadsheet\Exception as SpreadsheetException;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Exception as ReaderException;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
@@ -14,10 +16,30 @@ use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Writer\Exception as WriterException;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use RuntimeException;
 
-class ExcelHelper
+final class ExcelHelper
 {
+    public const HEADER_STYLE = [
+        'fill' => [
+            'fillType' => Fill::FILL_SOLID,
+            'color' => ['rgb' => 'E6E6FA'],
+        ],
+        'borders' => [
+            'allBorders' => [
+                'borderStyle' => Border::BORDER_THIN,
+                'color' => ['rgb' => 'D3D3D3'],
+            ],
+        ],
+        'font' => [
+            'bold' => true,
+        ],
+        'alignment' => [
+            'horizontal' => Alignment::HORIZONTAL_CENTER,
+            'vertical' => Alignment::VERTICAL_CENTER,
+            'wrapText' => true,
+        ],
+    ];
+
     /**
      * @param array $data
      * @return Spreadsheet
@@ -40,7 +62,7 @@ class ExcelHelper
 
     /**
      * @param Spreadsheet $excel
-     * @param $filename
+     * @param             $filename
      * @throws WriterException
      */
     public static function saveExcelFile(Spreadsheet $excel, $filename): void
@@ -50,39 +72,92 @@ class ExcelHelper
     }
 
     /**
+     * Заполняет заголовок таблицы (учитывая многомерность массива данных заголовков)
+     *
+     * Пример `$headers`:
+     *
+     * ```php
+     * [
+     *     'ID',
+     *     'Дилер' => [
+     *         'Код',
+     *         'Юр. название',
+     *         'Маркетинговое наименование',
+     *         'Регион',
+     *         'Город',
+     *     ],
+     *     'Модель',
+     *     'Канал',
+     *     'Площадка',
+     *     'Сумма план' => [
+     *         'по прайсу',
+     *         'производства',
+     *         'общее',
+     *     ],
+     *     'Сумма факт' => [
+     *         'по прайсу',
+     *         'производства',
+     *         'общее',
+     *     ],
+     *     'Компенсация',
+     *     'Статус (этап)',
+     *     'Город размещения',
+     * ]
+     * ```
+     *
      * @param Worksheet $sheet
-     * @param array $data
-     * @param int $row
-     * @throws Exception
+     * @param array     $headers
+     * @param int       $startRow    Индекс стартовой строки (является ссылкой для продолжения заполнения)
+     * @param int       $startColumn Индекс стартового столбца
+     * @throws SpreadsheetException
      */
-    public static function fillSheetFromData(Worksheet $sheet, array $data, &$row = 1): void
+    public static function fillHeader(Worksheet $sheet, array $headers, int &$startRow = 1, int $startColumn = 1): void
     {
-        foreach (array_values($data['headers']) as $col => $header) {
-            $cell = $sheet->getCellByColumnAndRow($col + 1, $row);
-            $cell->setValue($header);
-            $cell->getStyle()->applyFromArray(
-                [
-                    'fill' => [
-                        'fillType' => Fill::FILL_SOLID,
-                        'color' => ['rgb' => 'E6E6FA'],
-                    ],
-                    'borders' => [
-                        'allBorders' => [
-                            'borderStyle' => Border::BORDER_THIN,
-                            'color' => ['rgb' => 'D3D3D3'],
-                        ],
-                    ],
-                    'font' => [
-                        'bold' => true,
-                    ],
-                    'alignment' => [
-                        'horizontal' => Alignment::HORIZONTAL_CENTER,
-                        'vertical' => Alignment::VERTICAL_CENTER,
-                        'wrapText' => true,
-                    ],
-                ]
-            );
+        static $row;
+        static $headerDepth = 0;
+        static $headerColumn = 0;
+
+        $row ??= $startRow;
+
+        $headersDepth = ArrayHelper::depth($headers);
+        $headerRow = $row + $headerDepth;
+        foreach ($headers as $title => $header) {
+            $headerColumn++;
+            if (is_array($header)) {
+                $countHeaders = count(ArrayHelper::flatten($header));
+                $sheet->setCellValueByColumnAndRow($headerColumn, $headerRow, $title);
+                $sheet->mergeCellsByColumnAndRow($headerColumn, $headerRow, $headerColumn + $countHeaders - 1, $headerRow);
+                $headerColumn--;
+                $headerDepth++;
+                self::fillHeader($sheet, $header);
+                $headerDepth--;
+            } else {
+                $sheet->setCellValueByColumnAndRow($headerColumn, $headerRow, $header);
+                $sheet->mergeCellsByColumnAndRow($headerColumn, $headerRow, $headerColumn, $headerRow + $headersDepth - 1);
+            }
         }
+
+        $lastHeaderRow = $row + $headersDepth - 1;
+        $firstHighestColumn = Coordinate::columnIndexFromString($sheet->getHighestColumn($row));
+        $lastHighestColumn = Coordinate::columnIndexFromString($sheet->getHighestColumn($lastHeaderRow));
+        $sheet
+            ->getStyleByColumnAndRow($startColumn, $row, max($firstHighestColumn, $lastHighestColumn), $lastHeaderRow)
+            ->applyFromArray(self::HEADER_STYLE);
+
+        $startRow = $lastHeaderRow;
+    }
+
+    /**
+     * @param Worksheet $sheet
+     * @param array     $data
+     * @param int       $row
+     * @param int       $startColumn
+     * @throws SpreadsheetException
+     */
+    public static function fillSheetFromData(Worksheet $sheet, array $data, int &$row = 1, int $startColumn = 1): void
+    {
+        self::fillHeader($sheet, array_values($data['headers']), $row, $startColumn);
+
         if ($r = $sheet->getRowDimension('1')) {
             $r->setRowHeight(30);
         }
@@ -118,19 +193,19 @@ class ExcelHelper
 
                 $cell = $sheet->getCellByColumnAndRow($col + 1, $row);
                 switch (true) {
-                    case in_array($itemCode, $datetimeColumns):
+                    case in_array($itemCode, $datetimeColumns, true):
                         $value = Date::PHPToExcel($value);
                         $format = 'dd.mm.yyyy hh:mm';
                         break;
-                    case in_array($itemCode, $dateColumns):
+                    case in_array($itemCode, $dateColumns, true):
                         $value = Date::PHPToExcel($value);
                         $format = 'dd.mm.yyyy';
                         break;
-                    case in_array($itemCode, $yearMonthColumns):
+                    case in_array($itemCode, $yearMonthColumns, true):
                         $value = Date::PHPToExcel($value);
                         $format = 'mmmm yyyy';
                         break;
-                    case in_array($itemCode, $percentColumns):
+                    case in_array($itemCode, $percentColumns, true):
                         if (is_int($value)) {
                             $format = NumberFormat::FORMAT_PERCENTAGE;
                         } elseif (is_float($value)) {
@@ -139,7 +214,7 @@ class ExcelHelper
                             $format = null;
                         }
                         break;
-                    case !in_array($itemCode, $notFormulaColumns):
+                    case !in_array($itemCode, $notFormulaColumns, true):
                         if (is_int($value)) {
                             $format = NumberFormat::FORMAT_NUMBER;
                         } elseif (is_float($value)) {
@@ -160,10 +235,10 @@ class ExcelHelper
                         ->getNumberFormat()
                         ->setFormatCode($format);
                 }
-                if (in_array($itemCode, $multilineColumns)) {
+                if (in_array($itemCode, $multilineColumns, true)) {
                     $cellStyle->getAlignment()->setWrapText(true);
                 }
-                if (in_array($itemCode, $notFormulaColumns)) {
+                if (in_array($itemCode, $notFormulaColumns, true)) {
                     $cellStyle->setQuotePrefix(true);
                 }
             }
@@ -175,10 +250,8 @@ class ExcelHelper
         $col = 1;
         foreach ($data['headers'] as $itemCode => $header) {
             $column = $sheet->getColumnDimensionByColumn($col);
-            if (!$column) {
-                throw new RuntimeException();
-            }
-            if (!in_array($itemCode, $multilineColumns)) {
+
+            if (!in_array($itemCode, $multilineColumns, true)) {
                 $column->setAutoSize(true);
             } else {
                 $column->setWidth(60);
@@ -189,7 +262,7 @@ class ExcelHelper
 
     /**
      * @param Spreadsheet $excel
-     * @param array $data
+     * @param array       $data
      * @throws Exception
      */
     public static function addSheet(Spreadsheet $excel, array $data): void
@@ -199,7 +272,7 @@ class ExcelHelper
             $sheet->setTitle($title);
         }
 
-        static::fillSheetFromData($sheet, $data);
+        self::fillSheetFromData($sheet, $data);
     }
 
     /**
@@ -218,13 +291,13 @@ class ExcelHelper
 
     /**
      * @param array $data
-     * @param $fileName
+     * @param       $fileName
      * @throws Exception
      * @throws WriterException
      */
     public static function getRenderedExcel(array $data, $fileName): void
     {
-        $excel = static::getSpreadsheet($data);
+        $excel = self::getSpreadsheet($data);
         $excel->removeSheetByIndex(0);
 
         $isAssociative = false;
@@ -241,7 +314,7 @@ class ExcelHelper
         }
         $activeSheetIndex = null;
         foreach ($data as $index => $sheetData) {
-            static::addSheet($excel, $sheetData);
+            self::addSheet($excel, $sheetData);
             if ($sheetData['active'] ?? false) {
                 $activeSheetIndex = $index;
             }
@@ -249,6 +322,6 @@ class ExcelHelper
         if ($activeSheetIndex !== null) {
             $excel->setActiveSheetIndex($activeSheetIndex);
         }
-        static::saveExcelFile($excel, $fileName);
+        self::saveExcelFile($excel, $fileName);
     }
 }
