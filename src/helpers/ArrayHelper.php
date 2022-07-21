@@ -50,7 +50,7 @@ final class ArrayHelper
      * @param int   $depth
      * @return array
      */
-    public static function flatten(array $array, int $depth = INF): array
+    public static function flatten(array $array, $depth = INF): array
     {
         $result = [];
 
@@ -61,7 +61,7 @@ final class ArrayHelper
                     continue;
                 }
 
-                $result = array_merge($result, static::flatten($item, $depth - 1));
+                $result = array_merge($result, self::flatten($item, $depth - 1));
                 continue;
             }
 
