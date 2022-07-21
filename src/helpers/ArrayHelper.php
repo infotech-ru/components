@@ -19,7 +19,7 @@ final class ArrayHelper
         if (self::arrayIn($array)) {
             $depth++;
             foreach ($array as $value) {
-                if (self::arrayIn($value)) {
+                if (is_array($value) && self::arrayIn($value)) {
                     self::depth($value);
                 }
             }
