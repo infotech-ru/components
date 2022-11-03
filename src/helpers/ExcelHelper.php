@@ -146,7 +146,7 @@ final class ExcelHelper
                 ->applyFromArray(self::HEADER_STYLE);
 
             $startRow = $lastHeaderRow;
-            headerColumn = 0;
+            $headerColumn = 0;
         }
     }
 
