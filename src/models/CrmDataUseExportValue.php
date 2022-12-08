@@ -87,12 +87,10 @@ class CrmDataUseExportValue
 
     public const CODE_COLD_CALLS = 'cold_calls';
     public const CODE_HAS_USERS_SCHEDULE = 'has_users_schedule';
-    public const CODE_HAS_DNM_WAREHOUSE_STOCK_LOAD = 'has_dnm_warehouse_stock_load';
     public const CODE_MESSAGE_BROADCASTS_EMAIL = 'message_broadcasts_email';
     public const CODE_MESSAGE_BROADCASTS_SMS = 'message_broadcasts_sms';
 
-    public const CODE_SELF_LOADING_WAREHOUSE_VEHICLES_CHERY = 'self_loading_warehouse_vehicles_chery';
-    public const CODE_SELF_LOADING_WAREHOUSE_VEHICLES_EXEED = 'self_loading_warehouse_vehicles_exeed';
-    public const CODE_SELF_LOADING_WAREHOUSE_VEHICLES_LADA = 'self_loading_warehouse_vehicles_lada';
-    public const CODE_SELF_LOADING_WAREHOUSE_VEHICLES_HYUNDAI = 'self_loading_warehouse_vehicles_hyundai';
+    public const CODE_HAS_DNM_WAREHOUSE_STOCK_LOAD = 'has_dnm_warehouse_stock_load';
+    public const CODE_HAS_WAREHOUSE_FILE_STOCK_LOAD = 'has_warehouse_file_stock_load';
+    public const CODE_HAS_WAREHOUSE_MANUAL_CREATED_VEHICLES = 'has_warehouse_manual_created_vehicles';
 }
