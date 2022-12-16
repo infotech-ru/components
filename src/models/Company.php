@@ -38,6 +38,7 @@ class Company
     public const FORM_FGUP = 'ФГУП';
     public const FORM_CHPK = 'СХПК';
     public const FORM_KH = 'KX';
+    public const FORM_GKFX = 'ГКФХ';
 
     public static function getLegalFormList(): array
     {
@@ -76,6 +77,7 @@ class Company
             self::FORM_FGUP => self::FORM_FGUP,
             self::FORM_CHPK => self::FORM_CHPK,
             self::FORM_KH => self::FORM_KH,
+            self::FORM_GKFX => self::FORM_GKFX,
         ];
     }
 }
