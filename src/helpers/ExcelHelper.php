@@ -3,6 +3,7 @@
 namespace infotech\components\helpers;
 
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Exception as SpreadsheetException;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -166,6 +167,10 @@ final class ExcelHelper
         }
 
         $multilineColumns = $data['options']['wrapText'] ?? [];
+        /**
+         * @see \PhpOffice\PhpSpreadsheet\Style\NumberFormat
+         */
+        $formatColumns = $data['options']['format'] ?? [];
         $datetimeColumns = $data['options']['dateTime'] ?? [];
         $dateColumns = $data['options']['date'] ?? [];
         $yearMonthColumns = $data['options']['yearMonth'] ?? [];
@@ -196,6 +201,9 @@ final class ExcelHelper
 
                 $cell = $sheet->getCellByColumnAndRow($col + 1, $row);
                 switch (true) {
+                    case array_key_exists($itemCode, $formatColumns):
+                        $format = $formatColumns[$itemCode];
+                        break;
                     case in_array($itemCode, $datetimeColumns, true):
                         $value = Date::PHPToExcel($value);
                         $format = 'dd.mm.yyyy hh:mm';
@@ -230,9 +238,20 @@ final class ExcelHelper
                         $format = null;
                 }
 
-                $cell->setValue($value);
                 $cellStyle = $cell->getStyle();
-
+                switch ($format) {
+                    case NumberFormat::FORMAT_TEXT:
+                        $cell->setValueExplicit($value, DataType::TYPE_STRING);
+                        break;
+                    case NumberFormat::FORMAT_NUMBER:
+                    case NumberFormat::FORMAT_NUMBER_00:
+                    case NumberFormat::FORMAT_PERCENTAGE:
+                    case NumberFormat::FORMAT_PERCENTAGE_00:
+                        $cell->setValueExplicit($value, DataType::TYPE_NUMERIC);
+                        break;
+                    default:
+                        $cell->setValue($value);
+                }
                 if ($format) {
                     $cellStyle
                         ->getNumberFormat()
