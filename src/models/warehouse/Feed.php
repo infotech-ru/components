@@ -23,6 +23,7 @@ class Feed
     public const SBERBANK = 14;
     public const YANDEX_DIRECT = 15;
     public const YANDEX_XML = 16;
+    public const LEGO_CAR_V2 = 20;
 
     public static function getListDealers(): array
     {
@@ -37,6 +38,7 @@ class Feed
                 static::EURO_PLAN,
                 static::EXPERT_AVITO,
                 static::LEGO_CAR,
+                static::LEGO_CAR_V2,
                 static::RAIFFEISEN,
                 static::SBERBANK,
                 static::YANDEX_DIRECT,
@@ -60,6 +62,7 @@ class Feed
             self::EURO_PLAN => 'Европлан',
             self::EXPERT_AVITO => 'Expert Avito',
             self::LEGO_CAR => 'LegoCar',
+            self::LEGO_CAR_V2 => 'LegoCar V2',
             self::MAXPOSTER_CLOSE => 'MaxPoster - Закрывающий',
             self::MAXPOSTER => 'MaxPoster',
             self::MAXPOSTER_OLD => 'MaxPoster - Старая версия',
