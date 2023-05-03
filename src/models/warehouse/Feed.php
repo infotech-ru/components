@@ -24,6 +24,7 @@ class Feed
     public const YANDEX_DIRECT = 15;
     public const YANDEX_XML = 16;
     public const LEGO_CAR_V2 = 20;
+    public const KIA_RU = 21;
 
     public static function getListDealers(): array
     {
@@ -70,6 +71,7 @@ class Feed
             self::RAIFFEISEN => 'Raiffeisen',
             self::YANDEX_DIRECT => 'Смарт баннеры Яндекс Директ',
             self::YANDEX_XML => 'YML',
+            self::KIA_RU => 'Kia.ru',
         ];
     }
 }
