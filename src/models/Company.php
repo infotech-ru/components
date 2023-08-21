@@ -44,6 +44,7 @@ class Company
     public const FORM_FKGU = 'ФКГУ';
     public const FORM_SPSSPK = 'СПССПК';
     public const FORM_UFSIN = 'УФСИН';
+    public const FORM_NAO = 'НАО';
 
     public static function getLegalFormList(): array
     {
@@ -88,6 +89,7 @@ class Company
             self::FORM_FKGU => self::FORM_FKGU,
             self::FORM_SPSSPK => self::FORM_SPSSPK,
             self::FORM_UFSIN => self::FORM_UFSIN,
+            self::FORM_NAO => self::FORM_NAO,
         ];
     }
 }
