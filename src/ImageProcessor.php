@@ -2,27 +2,21 @@
 
 namespace infotech\components;
 
-/**
- * Class ImageProcessorComponent
- * @package infotech\components
- */
 class ImageProcessor
 {
     public $url;
     public $thumbnailWidth = 100;
     public $thumbnailHeight = 100;
+    public $largeWidth = 940;
+    public $largeHeight = 705;
 
     private const METHOD_CROP = 'crop';
     private const METHOD_RESIZE = 'resize';
 
     /**
-     * Генерирует ссылку на картинку обрезанную по заданному разрешению
-     * @param     $url
-     * @param int $width
-     * @param int $height
-     * @return string|null
+     * Генерирует ссылку на картинку, обрезанную по заданному разрешению
      */
-    public function crop($url, $width, $height)
+    public function crop($url, $width, $height): ?string
     {
         if (!$url) {
             return null;
@@ -39,12 +33,8 @@ class ImageProcessor
 
     /**
      * Генерирует ссылку на картинку с пропорционально изменённым размером
-     * @param     $url
-     * @param int $width
-     * @param int $height
-     * @return string|null
      */
-    public function resize($url, $width, $height)
+    public function resize($url, $width, $height): ?string
     {
         if (!$url) {
             return null;
@@ -60,12 +50,18 @@ class ImageProcessor
     }
 
     /**
-     * Генерирует ссылку на thumbnail картинки с заданными по умолчанию размерами
-     * @param $url
-     * @return string|null
+     * Генерирует ссылку на thumbnail-картинки с заданными по-умолчанию размерами
      */
-    public function thumbnail($url)
+    public function thumbnail($url): ?string
     {
         return $this->resize($url, $this->thumbnailWidth, $this->thumbnailHeight);
+    }
+
+    /**
+     * Генерирует ссылку на large-картинки с заданными по-умолчанию размерами
+     */
+    public function large($url): ?string
+    {
+        return $this->resize($url, $this->largeWidth, $this->largeHeight);
     }
 }
