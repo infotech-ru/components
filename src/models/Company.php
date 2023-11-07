@@ -45,6 +45,7 @@ class Company
     public const FORM_SPSSPK = 'СПССПК';
     public const FORM_UFSIN = 'УФСИН';
     public const FORM_NAO = 'НАО';
+    public const FORM_ANO = 'АНО';
 
     public static function getLegalFormList(): array
     {
@@ -90,6 +91,7 @@ class Company
             self::FORM_SPSSPK => self::FORM_SPSSPK,
             self::FORM_UFSIN => self::FORM_UFSIN,
             self::FORM_NAO => self::FORM_NAO,
+            self::FORM_ANO => self::FORM_ANO,
         ];
     }
 }
