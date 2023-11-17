@@ -9,6 +9,7 @@ class ImageProcessor
     public $thumbnailHeight = 100;
     public $largeWidth = 940;
     public $largeHeight = 705;
+    public $containerUuid;
 
     private const METHOD_CROP = 'crop';
     private const METHOD_RESIZE = 'resize';
@@ -22,13 +23,14 @@ class ImageProcessor
             return null;
         }
 
-        return implode('/', [
+        return implode('/', array_filter([
             rtrim($this->url, '/'),
             self::METHOD_CROP,
+            $this->containerUuid,
             $width,
             $height,
             ltrim(parse_url($url, PHP_URL_PATH), '/'),
-        ]);
+        ]));
     }
 
     /**
@@ -40,13 +42,14 @@ class ImageProcessor
             return null;
         }
 
-        return implode('/', [
+        return implode('/', array_filter([
             rtrim($this->url, '/'),
             self::METHOD_RESIZE,
+            $this->containerUuid,
             $width,
             $height,
             ltrim(parse_url($url, PHP_URL_PATH), '/'),
-        ]);
+        ]));
     }
 
     /**
