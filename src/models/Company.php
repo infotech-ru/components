@@ -48,6 +48,7 @@ class Company
     public const FORM_ANO = 'АНО';
     public const FORM_SPAO = 'СПАО';
     public const FORM_ASSOC = 'Ассоциация';
+    public const FORM_CHU = 'ЧУ'; // Частное учреждение, код ОКОПФ: 75500.
     public const FORM_NOCHU = 'НОЧУ';
 
     public static function getLegalFormList(): array
@@ -97,6 +98,7 @@ class Company
             self::FORM_ANO => self::FORM_ANO,
             self::FORM_SPAO => self::FORM_SPAO,
             self::FORM_ASSOC => self::FORM_ASSOC,
+            self::FORM_CHU => self::FORM_CHU,
             self::FORM_NOCHU => self::FORM_NOCHU,
         ];
     }
