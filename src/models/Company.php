@@ -139,6 +139,9 @@ class Company
     public const FORM_REDSMI = 'РедСМИ';
     public const FORM_PRT = 'ПрТ';
     public const FORM_APAOOT = 'АПАООТ';
+    public const FORM_OPAOOT = 'ОПАООТ';
+    public const FORM_OPAOZT = 'ОПАОЗТ';
+    public const FORM_OPTOO = 'ОПТОО';
     public const FORM_APAOZT = 'АПАОЗТ';
     public const FORM_APTOO = 'АПТОО';
     public const FORM_APST = 'АПСТ';
@@ -349,6 +352,10 @@ class Company
             self::FORM_SAU => self::FORM_SAU,
             self::FORM_KU => self::FORM_KU,
             self::FORM_PO => self::FORM_PO,
+            self::FORM_FOND => self::FORM_FOND,
+            self::FORM_OPAOOT => self::FORM_OPAOOT,
+            self::FORM_OPAOZT => self::FORM_OPAOZT,
+            self::FORM_OPTOO => self::FORM_OPTOO,
         ];
     }
 }
