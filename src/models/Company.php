@@ -178,6 +178,7 @@ class Company
     public const FORM_BU = 'БУ';
     public const FORM_SAU = 'САУ';
     public const FORM_KU = 'КУ';
+    public const FORM_AOOO = 'АООО';
 
     public static function getLegalFormList(): array
     {
@@ -356,6 +357,7 @@ class Company
             self::FORM_OPAOOT => self::FORM_OPAOOT,
             self::FORM_OPAOZT => self::FORM_OPAOZT,
             self::FORM_OPTOO => self::FORM_OPTOO,
+            self::FORM_AOOO => self::FORM_AOOO,
         ];
     }
 }
