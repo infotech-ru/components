@@ -178,7 +178,7 @@ class Company
     public const FORM_BU = 'БУ';
     public const FORM_SAU = 'САУ';
     public const FORM_KU = 'КУ';
-    public const FORM_AOOO = 'АООО';
+    public const FORM_AOOO = 'ПРЕДСТАВИТЕЛЬСТВО АООО';
     public const FORM_FGAU = 'ФГАУ'; // Федеральное государственное автономное учреждение; код ОКОПФ: 75101.
     public const FORM_FGBU = 'ФГБУ'; // Федеральное государственное бюджетное учреждение; код ОКОПФ: 75103.
     public const FORM_FGKU = 'ФГКУ'; // Федеральное государственное казенное учреждение; код ОКОПФ: 75104.
