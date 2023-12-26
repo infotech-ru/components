@@ -48,7 +48,7 @@ class Company
     public const FORM_ANO = 'АНО';
     public const FORM_SPAO = 'СПАО';
     public const FORM_ASSOC = 'Ассоциация';
-    public const FORM_CHU = 'ЧУ'; // Частное учреждение, код ОКОПФ: 75500.
+    public const FORM_CHU = 'ЧУ'; // Частное учреждение; код ОКОПФ: 75500.
     public const FORM_NOCHU = 'НОЧУ';
     public const FORM_GUP = 'ГУП';
     public const FORM_OOB = 'ООБ';
@@ -179,6 +179,9 @@ class Company
     public const FORM_SAU = 'САУ';
     public const FORM_KU = 'КУ';
     public const FORM_AOOO = 'АООО';
+    public const FORM_FGAU = 'ФГАУ'; // Федеральное государственное автономное учреждение; код ОКОПФ: 75101.
+    public const FORM_FGBU = 'ФГБУ'; // Федеральное государственное бюджетное учреждение; код ОКОПФ: 75103.
+    public const FORM_FGKU = 'ФГКУ'; // Федеральное государственное казенное учреждение; код ОКОПФ: 75104.
 
     public static function getLegalFormList(): array
     {
@@ -358,6 +361,9 @@ class Company
             self::FORM_OPAOZT => self::FORM_OPAOZT,
             self::FORM_OPTOO => self::FORM_OPTOO,
             self::FORM_AOOO => self::FORM_AOOO,
+            self::FORM_FGAU => self::FORM_FGAU,
+            self::FORM_FGBU => self::FORM_FGBU,
+            self::FORM_FGKU => self::FORM_FGKU,
         ];
     }
 }
