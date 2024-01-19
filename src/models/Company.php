@@ -182,6 +182,7 @@ class Company
     public const FORM_FGAU = 'ФГАУ'; // Федеральное государственное автономное учреждение; код ОКОПФ: 75101.
     public const FORM_FGBU = 'ФГБУ'; // Федеральное государственное бюджетное учреждение; код ОКОПФ: 75103.
     public const FORM_FGKU = 'ФГКУ'; // Федеральное государственное казенное учреждение; код ОКОПФ: 75104.
+    public const FORM_FBUZ = 'ФБУЗ'; // Федеральное бюджетное учреждение здравоохранения
 
     public static function getLegalFormList(): array
     {
@@ -364,6 +365,7 @@ class Company
             self::FORM_FGAU => self::FORM_FGAU,
             self::FORM_FGBU => self::FORM_FGBU,
             self::FORM_FGKU => self::FORM_FGKU,
+            self::FORM_FBUZ => self::FORM_FBUZ,
         ];
     }
 }
