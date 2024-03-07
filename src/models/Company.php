@@ -187,6 +187,8 @@ class Company
     public const FORM_FBUZ = 'ФБУЗ'; // Федеральное бюджетное учреждение здравоохранения
     public const FORM_SPK = 'СПК';
 
+    public const FORM_GAU = 'ГАУ';
+
     public static function getLegalFormList(): array
     {
         $reflection = new ReflectionClass(self::class);
