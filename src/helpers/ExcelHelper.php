@@ -41,10 +41,6 @@ final class ExcelHelper
         ],
     ];
 
-    /**
-     * @param array $data
-     * @return Spreadsheet
-     */
     public static function getSpreadsheet(array $data): Spreadsheet
     {
         $spreadsheet = new Spreadsheet();
@@ -62,8 +58,6 @@ final class ExcelHelper
     }
 
     /**
-     * @param Spreadsheet $excel
-     * @param             $filename
      * @throws WriterException
      */
     public static function saveExcelFile(Spreadsheet $excel, $filename): void
@@ -79,37 +73,41 @@ final class ExcelHelper
      *
      * ```php
      * [
-     *     'ID',
+     *     'common__id' => 'ID',
      *     'Дилер' => [
-     *         'Код',
-     *         'Юр. название',
-     *         'Маркетинговое наименование',
-     *         'Регион',
-     *         'Город',
+     *         'dealer__code' => 'Код',
+     *         'dealer__name' => 'Юр. название',
+     *         'dealer__marketing_name' => 'Маркетинговое наименование',
+     *         'dealer__region' => 'Регион',
+     *         'dealer__city' => 'Город',
      *     ],
-     *     'Модель',
-     *     'Канал',
-     *     'Площадка',
+     *     'common__model' => 'Модель',
+     *     'common__channel' => 'Канал',
+     *     'common__platform' => 'Площадка',
      *     'Сумма план' => [
-     *         'по прайсу',
-     *         'производства',
-     *         'общее',
+     *         'plan__price' => 'по прайсу',
+     *         'plan__product' => 'производства',
+     *         'plan__total' => 'общее',
      *     ],
      *     'Сумма факт' => [
-     *         'по прайсу',
-     *         'производства',
-     *         'общее',
+     *         'fact__price' => 'по прайсу',
+     *         'fact__product' => 'производства',
+     *         'fact__total' => 'общее',
      *     ],
-     *     'Компенсация',
-     *     'Статус (этап)',
-     *     'Город размещения',
+     *     'common__compensation' => 'Компенсация',
+     *     'common__stage' => 'Статус (этап)',
+     *     'common__city' => 'Город размещения',
      * ]
      * ```
      *
+     * Внимание! В качестве ключа элемента массива использовать:
+     *   `код данных` - если значением является заголовок
+     *   `заголовок` - если значением является массив следующего уровня
+     *
      * @param Worksheet $sheet
-     * @param array     $headers
-     * @param int       $startRow    Индекс стартовой строки (является ссылкой для продолжения заполнения)
-     * @param int       $startColumn Индекс стартового столбца
+     * @param array $headers
+     * @param int $startRow Индекс стартовой строки (является ссылкой для продолжения заполнения)
+     * @param int $startColumn Индекс стартового столбца
      * @throws SpreadsheetException
      */
     public static function fillHeader(Worksheet $sheet, array $headers, int &$startRow = 1, int $startColumn = 1): void
@@ -126,15 +124,15 @@ final class ExcelHelper
             $headerColumn++;
             if (is_array($header)) {
                 $countHeaders = count(ArrayHelper::flatten($header));
-                $sheet->setCellValueByColumnAndRow($headerColumn, $headerRow, $title);
-                $sheet->mergeCellsByColumnAndRow($headerColumn, $headerRow, $headerColumn + $countHeaders - 1, $headerRow);
+                $sheet->setCellValue([$headerColumn, $headerRow], $title);
+                $sheet->mergeCells([$headerColumn, $headerRow, $headerColumn + $countHeaders - 1, $headerRow]);
                 $headerColumn--;
                 $headerDepth++;
                 self::fillHeader($sheet, $header);
                 $headerDepth--;
             } else {
-                $sheet->setCellValueByColumnAndRow($headerColumn, $headerRow, $header);
-                $sheet->mergeCellsByColumnAndRow($headerColumn, $headerRow, $headerColumn, $headerRow + $headersDepth);
+                $sheet->setCellValue([$headerColumn, $headerRow], $header);
+                $sheet->mergeCells([$headerColumn, $headerRow, $headerColumn, $headerRow + $headersDepth]);
             }
         }
 
@@ -143,7 +141,7 @@ final class ExcelHelper
             $firstHighestColumn = Coordinate::columnIndexFromString($sheet->getHighestColumn($row));
             $lastHighestColumn = Coordinate::columnIndexFromString($sheet->getHighestColumn($lastHeaderRow));
             $sheet
-                ->getStyleByColumnAndRow($startColumn, $row, max($firstHighestColumn, $lastHighestColumn), $lastHeaderRow)
+                ->getStyle([$startColumn, $row, max($firstHighestColumn, $lastHighestColumn), $lastHeaderRow])
                 ->applyFromArray(self::HEADER_STYLE);
 
             $startRow = $lastHeaderRow;
@@ -152,31 +150,32 @@ final class ExcelHelper
     }
 
     /**
-     * @param Worksheet $sheet
-     * @param array     $data
-     * @param int       $row
-     * @param int       $startColumn
      * @throws SpreadsheetException
      */
     public static function fillSheetFromData(Worksheet $sheet, array $data, int &$row = 1, int $startColumn = 1): void
     {
-        self::fillHeader($sheet, array_values($data['headers']), $row, $startColumn);
+        $startRow = $row;
 
-        if ($r = $sheet->getRowDimension('1')) {
-            $r->setRowHeight(30);
+        self::fillHeader($sheet, $data['headers'] ?? [], $row, $startColumn);
+
+        for ($startRow; $startRow <= $row; $startRow++) {
+            $sheet->getRowDimension($startRow)->setRowHeight(30);
         }
 
-        $multilineColumns = $data['options']['wrapText'] ?? [];
-        /**
-         * @see \PhpOffice\PhpSpreadsheet\Style\NumberFormat
-         */
+        /** @see NumberFormat */
         $formatColumns = $data['options']['format'] ?? [];
+        $multilineColumns = $data['options']['wrapText'] ?? [];
         $datetimeColumns = $data['options']['dateTime'] ?? [];
         $dateColumns = $data['options']['date'] ?? [];
         $yearMonthColumns = $data['options']['yearMonth'] ?? [];
         $notFormulaColumns = $data['options']['notFormula'] ?? [];
         $percentColumns = $data['options']['percent'] ?? [];
-        $codes = array_keys($data['headers']);
+
+        if ($data['options']['multiHeader'] ?? false) {
+            $codes = array_keys(ArrayHelper::flatten($data['headers'] ?? [], INF, true));
+        } else {
+            $codes = array_keys($data['headers'] ?? []);
+        }
         // fixed using generator
         $rows = is_array($data['rows']) ? array_values($data['rows']) : $data['rows'];
         $row++;
@@ -199,7 +198,7 @@ final class ExcelHelper
                     continue;
                 }
 
-                $cell = $sheet->getCellByColumnAndRow($col + 1, $row);
+                $cell = $sheet->getCell([$col + 1, $row]);
                 switch (true) {
                     case array_key_exists($itemCode, $formatColumns):
                         $format = $formatColumns[$itemCode];
@@ -241,7 +240,7 @@ final class ExcelHelper
                 $cellStyle = $cell->getStyle();
                 switch ($format) {
                     case NumberFormat::FORMAT_TEXT:
-                        $cell->setValueExplicit($value, DataType::TYPE_STRING);
+                        $cell->setValueExplicit($value);
                         break;
                     case NumberFormat::FORMAT_NUMBER:
                     case NumberFormat::FORMAT_NUMBER_00:
@@ -270,7 +269,7 @@ final class ExcelHelper
             $row++;
         }
         $col = 1;
-        foreach ($data['headers'] as $itemCode => $header) {
+        foreach ($codes as $itemCode) {
             $column = $sheet->getColumnDimensionByColumn($col);
 
             if (!in_array($itemCode, $multilineColumns, true)) {
@@ -283,8 +282,6 @@ final class ExcelHelper
     }
 
     /**
-     * @param Spreadsheet $excel
-     * @param array       $data
      * @throws Exception
      */
     public static function addSheet(Spreadsheet $excel, array $data): void
@@ -298,8 +295,6 @@ final class ExcelHelper
     }
 
     /**
-     * @param $path
-     * @return Spreadsheet
      * @throws ReaderException
      */
     public static function readPhpExcelFile($path): Spreadsheet
@@ -312,10 +307,12 @@ final class ExcelHelper
     }
 
     /**
-     * @param array $data
-     * @param       $fileName
+     * Внимание! Если используете многомерные заголовки
      * @throws Exception
      * @throws WriterException
+     * @see ExcelHelper::fillHeader()
+     * то передавайте в массиве `options` ключ-параметр `multiHeader` с истинным значением
+     *
      */
     public static function getRenderedExcel(array $data, $fileName): void
     {

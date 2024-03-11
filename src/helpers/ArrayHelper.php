@@ -6,9 +6,6 @@ final class ArrayHelper
 {
     /**
      * Вычисляет глубину многомерного массива
-     *
-     * @param array $array
-     * @return int
      */
     public static function maxDepth(array $array): int
     {
@@ -28,27 +25,27 @@ final class ArrayHelper
 
     /**
      * Сведение многомерного массива в один уровень
-     *
-     * @param array $array
-     * @param int   $depth
-     * @return array
      */
-    public static function flatten(array $array, $depth = INF): array
+    public static function flatten(array $array, $depth = INF, bool $keepKeys = false): array
     {
         $result = [];
 
-        foreach ($array as $item) {
+        foreach ($array as $key => $item) {
             if (is_array($item)) {
                 if ($depth === 1) {
                     $result = array_merge($result, $item);
                     continue;
                 }
 
-                $result = array_merge($result, self::flatten($item, $depth - 1));
+                $result = array_merge($result, self::flatten($item, $depth - 1, $keepKeys));
                 continue;
             }
 
-            $result[] = $item;
+            if ($keepKeys) {
+                $result[$key] = $item;
+            } else {
+                $result[] = $item;
+            }
         }
 
         return $result;

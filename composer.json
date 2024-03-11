@@ -4,7 +4,7 @@
     "php": ">=7.4.0",
     "ext-curl": "*",
     "ext-json": "*",
-    "phpoffice/phpspreadsheet": "^1.22"
+    "phpoffice/phpspreadsheet": "^1.29"
   },
   "require-dev": {
     "roave/security-advisories": "dev-latest"
