@@ -240,7 +240,7 @@ final class ExcelHelper
                 $cellStyle = $cell->getStyle();
                 switch ($format) {
                     case NumberFormat::FORMAT_TEXT:
-                        $cell->setValueExplicit($value);
+                        $cell->setValueExplicit($value, DataType::TYPE_STRING);
                         break;
                     case NumberFormat::FORMAT_NUMBER:
                     case NumberFormat::FORMAT_NUMBER_00:
