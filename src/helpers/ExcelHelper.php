@@ -170,6 +170,7 @@ final class ExcelHelper
         $yearMonthColumns = $data['options']['yearMonth'] ?? [];
         $notFormulaColumns = $data['options']['notFormula'] ?? [];
         $percentColumns = $data['options']['percent'] ?? [];
+        $linkColumns = $data['options']['link'] ?? [];
 
         if ($data['options']['multiHeader'] ?? false) {
             $codes = array_keys(ArrayHelper::flatten($data['headers'] ?? [], INF, true));
@@ -261,6 +262,9 @@ final class ExcelHelper
                 }
                 if (in_array($itemCode, $notFormulaColumns, true)) {
                     $cellStyle->setQuotePrefix(true);
+                }
+                if (in_array($itemCode, $linkColumns, true)) {
+                    $cell->getHyperlink()->setUrl($value);
                 }
             }
             if ($r = $sheet->getRowDimension($row)) {
