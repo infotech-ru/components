@@ -186,7 +186,7 @@ class Company
     public const FORM_FGKU = 'ФГКУ'; // Федеральное государственное казенное учреждение; код ОКОПФ: 75104.
     public const FORM_FBUZ = 'ФБУЗ'; // Федеральное бюджетное учреждение здравоохранения
     public const FORM_SPK = 'СПК';
-
+    public const FORM_SPO = 'СПО'; // Союзы потребительских обществ; код ОКОПФ: 20608.
     public const FORM_GAU = 'ГАУ';
 
     public static function getLegalFormList(): array
