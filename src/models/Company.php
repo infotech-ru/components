@@ -188,6 +188,7 @@ class Company
     public const FORM_SPK = 'СПК';
     public const FORM_SPO = 'СПО'; // Союзы потребительских обществ; код ОКОПФ: 20608.
     public const FORM_GAU = 'ГАУ';
+    public const FORM_MKU = 'МКУ';
 
     public static function getLegalFormList(): array
     {
