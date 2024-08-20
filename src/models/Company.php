@@ -194,6 +194,8 @@ class Company
     public const FORM_GAU = 'ГАУ';
     public const FORM_MKU = 'МКУ';
 
+    public const FORM_BF = 'БФ'; // Код ОКОПФ: 70401.
+
     public static function getLegalFormList(): array
     {
         $reflection = new ReflectionClass(self::class);
@@ -388,6 +390,7 @@ class Company
             self::FORM_SPO => 'Союзы потребительских обществ',
             self::FORM_GAU => 'Государственное автономное учреждение',
             self::FORM_MKU => 'Муниципальное казенное учреждение',
+            self::FORM_BF => 'Благотворительный фонд',
         ];
     }
 }
