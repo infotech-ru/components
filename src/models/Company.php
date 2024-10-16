@@ -193,8 +193,12 @@ class Company
     public const FORM_SPO = 'СПО'; // Код ОКОПФ: 20608.
     public const FORM_GAU = 'ГАУ';
     public const FORM_MKU = 'МКУ';
-
     public const FORM_BF = 'БФ'; // Код ОКОПФ: 70401.
+    public const FORM_NKO = 'НКО'; // НКО Некоммерческая организация ОКОПФ: 71400
+    public const FORM_GKU = 'ГКУ'; // ГКУ Государственное казённое учреждение ОКОПФ: 75204
+    public const FORM_KPK = 'КПК'; // КПК Кредитный потребительский кооператив ОКОПФ: 20104
+    public const FORM_FBUN = 'ФБУН'; // ФБУН Федеральное бюджетное учреждение науки ОКОПФ: 75103
+    public const FORM_EMBASSY = 'Посольство'; // Посольство ОКОПФ: 40000
 
     public static function getLegalFormList(): array
     {
@@ -391,6 +395,11 @@ class Company
             self::FORM_GAU => 'Государственное автономное учреждение',
             self::FORM_MKU => 'Муниципальное казенное учреждение',
             self::FORM_BF => 'Благотворительный фонд',
+            self::FORM_NKO => 'Некоммерческая организация',
+            self::FORM_GKU => 'Государственное казённое учреждение',
+            self::FORM_KPK => 'Кредитный потребительский кооператив',
+            self::FORM_FBUN => 'Федеральное бюджетное учреждение науки',
+            self::FORM_EMBASSY => 'Посольство',
         ];
     }
 }
