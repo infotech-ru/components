@@ -200,6 +200,7 @@ class Company
     public const FORM_FBUN = 'ФБУН'; // ФБУН Федеральное бюджетное учреждение науки ОКОПФ: 75103
     public const FORM_EMBASSY = 'Посольство'; // Посольство ОКОПФ: 40000
     public const FORM_MAU = 'МАУ'; // Муниципальное автономное учреждение ОКОПФ: 75401
+    public const FORM_KGKU = 'КГКУ'; //КРАЕВОЕ ГОСУДАРСТВЕННОЕ КАЗЕННОЕ УЧРЕЖДЕНИЕ
 
     public static function getLegalFormList(): array
     {
@@ -402,6 +403,7 @@ class Company
             self::FORM_FBUN => 'Федеральное бюджетное учреждение науки',
             self::FORM_EMBASSY => 'Посольство',
             self::FORM_MAU => 'Муниципальное автономное учреждение',
+            self::FORM_KGKU => 'Краевое государственное казенное учреждение',
         ];
     }
 }
