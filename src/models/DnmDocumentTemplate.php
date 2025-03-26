@@ -11,4 +11,5 @@ class DnmDocumentTemplate
     public const TYPE_CORPORATE_DISCOUNT = 5;
     public const TYPE_IMPLEMENTER_INSTRUCTION = 6;
     public const TYPE_IMPLEMENTER_REPORT = 7;
+    public const TYPE_WAREHOUSE_VEHICLE_PRICE = 8;
 }
