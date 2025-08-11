@@ -41,9 +41,9 @@ class CrmDataUseExportValue
     public const CODE_TASK_BOARD_POSITIONS = 'task_board_positions';
 
     public const CODE_RETAIL_WAREHOUSE_EXPORTS = 'retail_warehouse_exports';
-    public const CODE_CM_EXPERT_RETAIL_WAREHOUSE = 'code_cm_expert_retail_warehouse';
+    public const CODE_CM_EXPERT_RETAIL_WAREHOUSE = 'cm_expert_retail_warehouse';
 
     public const CODE_SALES_USED_WAREHOUSE_EXPORTS = 'sales_used_warehouse_exports';
-    public const CODE_CM_EXPERT_USED_WAREHOUSE = 'code_cm_expert_used_warehouse';
-    public const CODE_ACCEPTANCE_VEHICLES_THROUGH_CASES = 'code_acceptance_vehicles_through_cases';
+    public const CODE_CM_EXPERT_USED_WAREHOUSE = 'cm_expert_used_warehouse';
+    public const CODE_ACCEPTANCE_VEHICLES_THROUGH_CASES = 'acceptance_vehicles_through_cases';
 }
