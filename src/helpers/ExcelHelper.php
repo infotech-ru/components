@@ -60,9 +60,12 @@ final class ExcelHelper
     /**
      * @throws WriterException
      */
-    public static function saveExcelFile(Spreadsheet $excel, $filename): void
+    public static function saveExcelFile(Spreadsheet $excel, $filename, ?callable $beforeSave = null): void
     {
         $writer = new Xlsx($excel);
+        if (null !== $beforeSave) {
+            $beforeSave($writer);
+        }
         $writer->save($filename);
     }
 
@@ -318,7 +321,7 @@ final class ExcelHelper
      * то передавайте в массиве `options` ключ-параметр `multiHeader` с истинным значением
      *
      */
-    public static function getRenderedExcel(array $data, $fileName): void
+    public static function getRenderedExcel(array $data, $fileName, ?callable $beforeSave = null): void
     {
         $excel = self::getSpreadsheet($data);
         $excel->removeSheetByIndex(0);
@@ -345,6 +348,6 @@ final class ExcelHelper
         if ($activeSheetIndex !== null) {
             $excel->setActiveSheetIndex($activeSheetIndex);
         }
-        self::saveExcelFile($excel, $fileName);
+        self::saveExcelFile($excel, $fileName, $beforeSave);
     }
 }
