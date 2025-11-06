@@ -158,7 +158,7 @@ final class ExcelHelper
     /**
      * @throws SpreadsheetException
      */
-    public static function fillSheetFromData(Worksheet $sheet, array $data, int &$row = 1, int $startColumn = 1): void
+    public static function fillSheetFromData(Worksheet $sheet, array $data, int &$row = 1, int $startColumn = 1, int $batchSize = 0): void
     {
         $startRow = $row;
 
@@ -277,6 +277,9 @@ final class ExcelHelper
                 $r->setRowHeight(-1);
             }
             $row++;
+            if ($batchSize > 0 && $row % $batchSize === 0) {
+                $sheet->garbageCollect();
+            }
         }
         $col = 1;
         foreach ($codes as $itemCode) {
@@ -294,14 +297,17 @@ final class ExcelHelper
     /**
      * @throws Exception
      */
-    public static function addSheet(Spreadsheet $excel, array $data): void
+    public static function addSheet(Spreadsheet $excel, array $data, int $batchSize = 0): void
     {
         $sheet = $excel->createSheet();
         if ($title = ($data['title'] ?? null)) {
             $sheet->setTitle($title);
         }
 
-        self::fillSheetFromData($sheet, $data);
+        $row = 1;
+        $startColumn = 1;
+
+        self::fillSheetFromData($sheet, $data, $row, $startColumn, $batchSize);
     }
 
     /**
@@ -324,7 +330,7 @@ final class ExcelHelper
      * то передавайте в массиве `options` ключ-параметр `multiHeader` с истинным значением
      *
      */
-    public static function getRenderedExcel(array $data, $fileName, ?callable $beforeSave = null, ?callable $afterSave = null): void
+    public static function getRenderedExcel(array $data, $fileName, int $batchSize = 0, ?callable $beforeSave = null, ?callable $afterSave = null): void
     {
         $excel = self::getSpreadsheet($data);
         $excel->removeSheetByIndex(0);
@@ -343,7 +349,7 @@ final class ExcelHelper
         }
         $activeSheetIndex = null;
         foreach ($data as $index => $sheetData) {
-            self::addSheet($excel, $sheetData);
+            self::addSheet($excel, $sheetData, $batchSize);
             if ($sheetData['active'] ?? false) {
                 $activeSheetIndex = $index;
             }
