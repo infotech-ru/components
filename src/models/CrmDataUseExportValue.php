@@ -46,4 +46,7 @@ class CrmDataUseExportValue
     public const CODE_SALES_USED_WAREHOUSE_EXPORTS = 'sales_used_warehouse_exports';
     public const CODE_CM_EXPERT_USED_WAREHOUSE = 'cm_expert_used_warehouse';
     public const CODE_ACCEPTANCE_VEHICLES_THROUGH_CASES = 'acceptance_vehicles_through_cases';
+
+    public const CODE_OLD_STOCK_NEW = 'code_old_stock_new';
+    public const CODE_OLD_STOCK_USED = 'code_old_stock_used';
 }
