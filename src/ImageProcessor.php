@@ -9,6 +9,8 @@ class ImageProcessor
     public $thumbnailHeight = 100;
     public $largeWidth = 940;
     public $largeHeight = 705;
+
+    /* @deprecated — больше не используется, удалить после 04.2026 */
     public $containerUuid;
 
     private const METHOD_CROP = 'crop';
@@ -19,18 +21,7 @@ class ImageProcessor
      */
     public function crop($url, $width, $height): ?string
     {
-        if (!$url) {
-            return null;
-        }
-
-        return implode('/', array_filter([
-            rtrim($this->url, '/'),
-            self::METHOD_CROP,
-            $this->containerUuid,
-            $width,
-            $height,
-            ltrim(parse_url($url, PHP_URL_PATH), '/'),
-        ]));
+        return $this->createUrl($url, $width, $height, self::METHOD_CROP);
     }
 
     /**
@@ -38,18 +29,7 @@ class ImageProcessor
      */
     public function resize($url, $width, $height): ?string
     {
-        if (!$url) {
-            return null;
-        }
-
-        return implode('/', array_filter([
-            rtrim($this->url, '/'),
-            self::METHOD_RESIZE,
-            $this->containerUuid,
-            $width,
-            $height,
-            ltrim(parse_url($url, PHP_URL_PATH), '/'),
-        ]));
+        return $this->createUrl($url, $width, $height, self::METHOD_RESIZE);
     }
 
     /**
@@ -66,5 +46,39 @@ class ImageProcessor
     public function large($url): ?string
     {
         return $this->resize($url, $this->largeWidth, $this->largeHeight);
+    }
+
+    private function createUrl($url, $width, $height, $method): ?string
+    {
+        if (!$url) {
+            return null;
+        }
+
+        $parts = parse_url($url);
+
+        if (preg_match('#^([^.]+)\.selstorage\.ru$#', $parts['host'], $matches)) {
+            // новый формат ссылок selectel
+            // https://59e1663f-0514-49b7-a4f7-58baec26e2f3.selstorage.ru/catalog/20121/4/393ceade86.jpg
+
+            return implode('/', [
+                rtrim($this->url, '/'),
+                $method,
+                $matches[1],
+                $width,
+                $height,
+                ltrim($parts['path'], '/'),
+            ]);
+        }
+
+        // старый формат ссылок selectel
+        // https://195004.selcdn.ru/ref/catalog/20121/4/393ceade86.jpg
+
+        return implode('/', [
+            rtrim($this->url, '/'),
+            $method,
+            $width,
+            $height,
+            ltrim($parts['path'], '/'),
+        ]);
     }
 }
