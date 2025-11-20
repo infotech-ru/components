@@ -56,6 +56,10 @@ class ImageProcessor
 
         $parts = parse_url($url);
 
+        if (empty($parts['host']) || empty($parts['path'])) {
+            return null;
+        }
+
         if (preg_match('#^([^.]+)\.selstorage\.ru$#', $parts['host'], $matches)) {
             // новый формат ссылок selectel
             // https://59e1663f-0514-49b7-a4f7-58baec26e2f3.selstorage.ru/catalog/20121/4/393ceade86.jpg
