@@ -49,4 +49,10 @@ class CrmDataUseExportValue
 
     public const CODE_OLD_STOCK_NEW = 'code_old_stock_new';
     public const CODE_OLD_STOCK_USED = 'code_old_stock_used';
+
+    public const CODE_CONTACT_CENTER = 'code_contact_center';
+    public const CODE_REQUEST_FROM_CALL = 'code_request_from_call';
+    public const CODE_AVITO_CHAT = 'code_avito_chat';
+    public const CODE_AUTO_RU_CHAT = 'code_auto_ru_chat';
+    public const CODE_REQUEST_FROM_CALLTOUCH = 'code_request_from_calltouch';
 }
