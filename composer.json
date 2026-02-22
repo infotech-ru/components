@@ -1,10 +1,13 @@
 {
   "name": "infotech/components",
   "require": {
-    "php": ">=7.4.0",
+    "php": ">=8.4.0",
     "ext-curl": "*",
     "ext-json": "*",
-    "phpoffice/phpspreadsheet": "^1.23"
+    "ext-pdo": "*",
+    "phpoffice/phpspreadsheet": "^1.23",
+    "ezyang/htmlpurifier": "4.19",
+    "yiisoft/yii2": "2.0.53"
   },
   "require-dev": {
     "roave/security-advisories": "dev-latest"
@@ -20,5 +23,10 @@
       "type": "composer",
       "url": "https://asset-packagist.org"
     }
-  ]
+  ],
+  "config": {
+    "allow-plugins": {
+      "yiisoft/yii2-composer": true
+    }
+  }
 }
