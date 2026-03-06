@@ -91,14 +91,9 @@ class ArrayExpressionBuilder implements ExpressionBuilderInterface
             return $value;
         }
 
-        if (str_starts_with($expression->getType(), 'Tuple')) {
-            return new Expression("JSONExtract('" . json_encode($value, JSON_HEX_APOS | JSON_UNESCAPED_UNICODE) . "', '"  . $expression->getType() . "')");
-        }
+        $json = json_encode($value, JSON_UNESCAPED_UNICODE);
+        $jsonKey = ':json_' . md5($json);
 
-        if ($expression->getType() === Schema::TYPE_JSON) {
-            return new JsonExpression($value);
-        }
-
-        return $value;
+        return new Expression("JSONExtract({$jsonKey}, '"  . $expression->getType() . "')", [$jsonKey => $json]);
     }
 }
