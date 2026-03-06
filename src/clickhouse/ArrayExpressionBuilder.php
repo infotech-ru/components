@@ -91,9 +91,17 @@ class ArrayExpressionBuilder implements ExpressionBuilderInterface
             return $value;
         }
 
-        $json = json_encode($value, JSON_UNESCAPED_UNICODE);
-        $jsonKey = ':json_' . md5($json);
+        if (str_starts_with($expression->getType(), 'Tuple')) {
+            $json = json_encode($value, JSON_UNESCAPED_UNICODE);
+            $jsonKey = ':json_' . md5($json);
 
-        return new Expression("JSONExtract({$jsonKey}, '"  . $expression->getType() . "')", [$jsonKey => $json]);
+            return new Expression("JSONExtract({$jsonKey}, '"  . $expression->getType() . "')", [$jsonKey => $json]);
+        }
+
+        if ($expression->getType() === Schema::TYPE_JSON) {
+            return new JsonExpression($value);
+        }
+
+        return $value;
     }
 }
