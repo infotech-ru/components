@@ -5,6 +5,8 @@
     "ext-curl": "*",
     "ext-json": "*",
     "ext-pdo": "*",
+    "ext-imagick": "*",
+    "ext-gd": "*",
     "phpoffice/phpspreadsheet": "^1.23",
     "ezyang/htmlpurifier": "4.19",
     "yiisoft/yii2": "2.0.53"
