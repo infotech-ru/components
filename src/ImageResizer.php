@@ -6,6 +6,7 @@ use Exception;
 use Imagick;
 use ImagickException;
 use ImagickPixel;
+use Throwable;
 
 class ImageResizer
 {
@@ -13,8 +14,20 @@ class ImageResizer
     private bool $strip = false;
     private bool $maintainAspect = false;
 
+    private bool $hasImagick;
+    private bool $hasGd;
+
+    /**
+     * @throws Exception
+     */
     public function __construct(private readonly string $sourcePath)
     {
+        $this->hasImagick = extension_loaded('imagick');
+        $this->hasGd = extension_loaded('gd');
+
+        if (!$this->hasImagick && !$this->hasGd) {
+            throw new Exception('Не найдено расширение для работы с изображениями (GD или Imagick)');
+        }
     }
 
     public function setQuality(int $quality): static
@@ -44,15 +57,11 @@ class ImageResizer
      */
     public function resizeWithBg(string $targetPath, int|string $width, int|string $height, int|string $maxWidth, int|string $maxHeight): bool
     {
-        if (extension_loaded('imagick')) {
-            return $this->resizeWithBgImagick($targetPath, $width, $height, $maxWidth, $maxHeight);
-        }
-
-        if (extension_loaded('gd')) {
-            return $this->resizeWithBgGd($targetPath, $width, $height, $maxWidth, $maxHeight);
-        }
-
-        throw new Exception('Не найдено расширение для работы с изображениями (GD или Imagick)');
+        return match (true) {
+            $this->hasImagick => $this->resizeWithBgImagick($targetPath, $width, $height, $maxWidth, $maxHeight),
+            $this->hasGd => $this->resizeWithBgGd($targetPath, $width, $height, $maxWidth, $maxHeight),
+            default => false,
+        };
     }
 
     /**
@@ -61,13 +70,20 @@ class ImageResizer
      */
     public function resize(string $targetPath, int|string $width, int|string $height): bool
     {
-        if (extension_loaded('imagick')) {
-            return $this->resizeImagick($targetPath, $width, $height);
-        } elseif (extension_loaded('gd')) {
-            return $this->resizeGd($targetPath, $width, $height);
-        } else {
-            throw new Exception('Не найдено расширение для работы с изображениями (GD или Imagick)');
-        }
+        return match (true) {
+            $this->hasImagick => $this->resizeImagick($targetPath, $width, $height),
+            $this->hasGd => $this->resizeGd($targetPath, $width, $height),
+            default => false,
+        };
+    }
+
+    public function flipHorizontal(string $targetPath): bool
+    {
+        return match (true) {
+            $this->hasImagick => $this->flipImagick($targetPath),
+            $this->hasGd => $this->flipGd($targetPath),
+            default => false,
+        };
     }
 
     /**
@@ -216,6 +232,52 @@ class ImageResizer
         imagedestroy($source);
         imagedestroy($resized);
         imagedestroy($canvas);
+
+        return $result;
+    }
+
+    private function flipImagick(string $targetPath): bool
+    {
+        try {
+            $image = new \Imagick($this->sourcePath);
+            $image->flopImage();
+            $image->setImageCompressionQuality($this->quality);
+            $image->writeImage($targetPath);
+            $image->clear();
+
+            return true;
+        } catch (Throwable) {
+            return false;
+        }
+    }
+
+    private function flipGd(string $targetPath): bool
+    {
+        if (($imageSize = getimagesize($this->sourcePath)) === false) {
+            return false;
+        }
+
+        [$width, $height, $type] = $imageSize;
+        if (!($source = $this->createGdResource($type, $this->sourcePath))) {
+            return false;
+        }
+
+        $flipped = imagecreatetruecolor($width, $height);
+        if ($type === IMAGETYPE_PNG || $type === IMAGETYPE_GIF) {
+            imagealphablending($flipped, false);
+            imagesavealpha($flipped, true);
+            $transparent = imagecolorallocatealpha($flipped, 0, 0, 0, 127);
+            imagefill($flipped, 0, 0, $transparent);
+        }
+
+        for ($x = 0; $x < $width; $x++) {
+            imagecopy($flipped, $source, $width - $x - 1, 0, $x, 0, 1, $height);
+        }
+
+        $result = $this->saveGdResource($flipped, $targetPath, $type);
+
+        imagedestroy($source);
+        imagedestroy($flipped);
 
         return $result;
     }
