@@ -55,4 +55,6 @@ class CrmDataUseExportValue
     public const CODE_AVITO_CHAT = 'code_avito_chat';
     public const CODE_AUTO_RU_CHAT = 'code_auto_ru_chat';
     public const CODE_REQUEST_FROM_CALLTOUCH = 'code_request_from_calltouch';
+    public const CODE_REQUEST_PROCESSING = 'code_request_processing';
+    public const CODE_CONVERSION_REQUEST_TO_CASE = 'code_conversion_request_to_case';
 }
