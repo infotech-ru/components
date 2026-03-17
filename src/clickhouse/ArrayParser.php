@@ -25,7 +25,7 @@ class ArrayParser
         if (preg_match('/^\[(.+)]$/iu', $value, $matches)) {
             return array_map(
                 static fn(mixed $v): mixed => ($v === 'NULL' || $v === 'null') ? null : $v,
-                str_getcsv($matches[1], ',', "'"),
+                str_getcsv($matches[1], separator: ',', enclosure: "'", escape: "\\"),
             );
         }
 
