@@ -11,14 +11,14 @@ class CrmDataUseExportValue
     public const CODE_COLD_CALLS = 'cold_calls';
 
     public const CODE_RETAIL_CASES = 'retail_cases';
-    public const CODE_RETAIL_CASE_REQUEST = 'retail_case_requests';
+    public const CODE_RETAIL_CASE_REQUESTS = 'retail_case_requests';
     public const CODE_RETAIL_PLANS = 'retail_plans';
     public const CODE_RETAIL_CASES_ISSUES_WITHOUT_WAREHOUSE_VEHICLES = 'retail_cases_issues_without_warehouse_vehicles';
     public const CODE_RETAIL_CASES_OFFERS = 'retail_cases_offers';
     public const CODE_RETAIL_CASES_1C_CONTRACTS = 'retail_cases_1c_contracts';
 
     public const CODE_CORPORATE_CASES = 'corporate_cases';
-    public const CODE_CORPORATE_CASE_REQUEST = 'corporate_case_requests';
+    public const CODE_CORPORATE_CASE_REQUESTS = 'corporate_case_requests';
     public const CODE_CORPORATE_CASES_ISSUES_WITHOUT_WAREHOUSE_VEHICLES = 'corporate_cases_issues_without_warehouse_vehicles';
     public const CODE_CORPORATE_CASES_OFFERS = 'corporate_cases_offers';
     public const CODE_CORPORATE_CASES_1C_CONTRACTS = 'corporate_cases_1c_contracts';
