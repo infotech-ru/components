@@ -13,4 +13,5 @@ class DnmDocumentTemplate
     public const TYPE_IMPLEMENTER_REPORT = 7;
     public const TYPE_WAREHOUSE_VEHICLE_PRICE = 8;
     public const TYPE_FORWARDING_RECEIPT = 9;
+    public const TYPE_RAPPORT_WARRANTY_TRANSPORT = 10;
 }
