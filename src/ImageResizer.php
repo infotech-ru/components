@@ -10,12 +10,12 @@ use Throwable;
 
 class ImageResizer
 {
-    private int $quality = 100;
-    private bool $strip = false;
-    private bool $maintainAspect = false;
+    protected int $quality = 100;
+    protected bool $strip = false;
+    protected bool $maintainAspect = false;
 
-    private bool $hasImagick;
-    private bool $hasGd;
+    protected bool $hasImagick;
+    protected bool $hasGd;
 
     /**
      * @throws Exception
@@ -51,15 +51,52 @@ class ImageResizer
         return $this;
     }
 
+    private function hasTransparentBackground(): bool
+    {
+        $imageSize = getimagesize($this->sourcePath);
+        if ($imageSize === false || ($imageSize[2] ?? null) !== IMAGETYPE_PNG) {
+            return false;
+        }
+
+        if ($this->hasImagick) {
+            try {
+                $image = new Imagick($this->sourcePath);
+                $pixel = $image->getImagePixelColor(0, 0);
+                $color = $pixel->getColor(true);
+                $image->clear();
+
+                return isset($color['a']) && $color['a'] < 1;
+            } catch (Throwable) {
+                return false;
+            }
+        }
+
+        if (!$this->hasGd) {
+            return false;
+        }
+
+        $image = imagecreatefrompng($this->sourcePath);
+        if ($image === false) {
+            return false;
+        }
+
+        $pixel = imagecolorat($image, 0, 0);
+        imagedestroy($image);
+
+        return (($pixel & 0x7F000000) >> 24) > 0;
+    }
+
     /**
      * @throws Exception
      * @throws ImagickException
      */
     public function resizeWithBg(string $targetPath, int|string $width, int|string $height, int|string $maxWidth, int|string $maxHeight): bool
     {
+        $transparentBackground = $this->hasTransparentBackground();
+
         return match (true) {
-            $this->hasImagick => $this->resizeWithBgImagick($targetPath, $width, $height, $maxWidth, $maxHeight),
-            $this->hasGd => $this->resizeWithBgGd($targetPath, $width, $height, $maxWidth, $maxHeight),
+            $this->hasImagick => $this->resizeWithBgImagick($targetPath, $width, $height, $maxWidth, $maxHeight, $transparentBackground),
+            $this->hasGd => $this->resizeWithBgGd($targetPath, $width, $height, $maxWidth, $maxHeight, $transparentBackground),
             default => false,
         };
     }
@@ -157,7 +194,14 @@ class ImageResizer
      * @throws ImagickException
      * @throws \ImagickPixelException
      */
-    private function resizeWithBgImagick(string $targetPath, int|string $width, int|string $height, int|string $maxWidth, int|string $maxHeight): bool
+    private function resizeWithBgImagick(
+        string $targetPath,
+        int|string $width,
+        int|string $height,
+        int|string $maxWidth,
+        int|string $maxHeight,
+        bool $transparentBackground = false
+    ): bool
     {
         $image = new Imagick($this->sourcePath);
 
@@ -177,8 +221,14 @@ class ImageResizer
         }
 
         $canvas = new Imagick();
-        $canvas->newImage($width, $height, new ImagickPixel($background));
-        $canvas->setImageFormat($image->getImageFormat());
+        if ($transparentBackground) {
+            $canvas->newImage($width, $height, new ImagickPixel('transparent'), 'png');
+            $canvas->setImageFormat('png');
+        } else {
+            $canvas->newImage($width, $height, new ImagickPixel($background));
+            $canvas->setImageFormat($image->getImageFormat());
+        }
+
 
         $x = (int)floor(($width - $image->getImageWidth()) / 2);
         $y = (int)floor(($height - $image->getImageHeight()) / 2);
@@ -193,7 +243,14 @@ class ImageResizer
         return true;
     }
 
-    private function resizeWithBgGd(string $targetPath, int|string $width, int|string $height, int|string $maxWidth, int|string $maxHeight): bool
+    private function resizeWithBgGd(
+        string $targetPath,
+        int|string $width,
+        int|string $height,
+        int|string $maxWidth,
+        int|string $maxHeight,
+        bool $transparentBackground = false
+    ): bool
     {
         [$srcWidth, $srcHeight, $type] = getimagesize($this->sourcePath);
 
@@ -210,6 +267,7 @@ class ImageResizer
         [$fitWidth, $fitHeight] = $this->fitSize($srcWidth, $srcHeight, $maxWidth, $maxHeight);
 
         $resized = imagecreatetruecolor($fitWidth, $fitHeight);
+
         if ($type === IMAGETYPE_PNG || $type === IMAGETYPE_GIF) {
             imagealphablending($resized, false);
             imagesavealpha($resized, true);
@@ -220,8 +278,15 @@ class ImageResizer
         imagecopyresampled($resized, $source, 0, 0, 0, 0, $fitWidth, $fitHeight, $srcWidth, $srcHeight);
 
         $canvas = imagecreatetruecolor($width, $height);
-        $bg = imagecolorallocate($canvas, $r, $g, $b);
-        imagefill($canvas, 0, 0, $bg);
+
+        if ($transparentBackground) {
+            imagealphablending($canvas, false);
+            imagesavealpha($canvas, true);
+            imagefill($canvas, 0, 0, imagecolorallocatealpha($canvas, 0, 0, 0, 127));
+        } else {
+            imagefill($canvas, 0, 0, imagecolorallocate($canvas, $r, $g, $b));
+        }
+
 
         $x = (int)floor(($width - $fitWidth) / 2);
         $y = (int)floor(($height - $fitHeight) / 2);
