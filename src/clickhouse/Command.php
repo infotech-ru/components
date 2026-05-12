@@ -78,4 +78,12 @@ class Command extends BaseCommand
 
         return $this->setSql($sql)->requireTableSchemaRefresh($dictionary);
     }
+
+    public function asyncInsert($table, $columns)
+    {
+        $params = [];
+        $sql = $this->db->getQueryBuilder()->asyncInsert($table, $columns, $params);
+
+        return $this->setSql($sql)->bindValues($params);
+    }
 }
