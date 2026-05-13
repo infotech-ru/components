@@ -38,6 +38,15 @@ class QueryBuilder extends BaseQueryBuilder
         ]);
     }
 
+    public function asyncInsert($table, $columns, &$params)
+    {
+        [$names, $placeholders, $values, $params] = $this->prepareInsertValues($table, $columns, $params);
+        return 'INSERT INTO ' . $this->db->quoteTableName($table)
+            . (!empty($names) ? ' (' . implode(', ', $names) . ')' : '')
+            . (' SETTINGS async_insert=1, wait_for_async_insert=1')
+            . (!empty($placeholders) ? ' VALUES (' . implode(', ', $placeholders) . ')' : $values);
+    }
+
     public function update($table, $columns, $condition, &$params): string
     {
         [$lines, $params] = $this->prepareUpdateSets($table, $columns, $params);

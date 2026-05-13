@@ -173,4 +173,22 @@ class Schema extends MySqlSchema
     {
         return new ColumnSchemaBuilder($type, $length, $this->db);
     }
+
+    public function asyncInsert($table, $columns)
+    {
+        $this->db->createCommand()->asyncInsert($table, $columns)->execute();
+        $tableSchema = $this->getTableSchema($table);
+
+        $result = [];
+        foreach ($tableSchema->primaryKey as $name) {
+            if ($tableSchema->columns[$name]->autoIncrement) {
+                $result[$name] = $this->getLastInsertID($tableSchema->sequenceName);
+                break;
+            }
+
+            $result[$name] = isset($columns[$name]) ? $columns[$name] : $tableSchema->columns[$name]->defaultValue;
+        }
+
+        return $result;
+    }
 }
