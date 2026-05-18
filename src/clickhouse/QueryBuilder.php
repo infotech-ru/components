@@ -43,7 +43,7 @@ class QueryBuilder extends BaseQueryBuilder
         [$names, $placeholders, $values, $params] = $this->prepareInsertValues($table, $columns, $params);
         return 'INSERT INTO ' . $this->db->quoteTableName($table)
             . (!empty($names) ? ' (' . implode(', ', $names) . ')' : '')
-            . (' SETTINGS async_insert=1, wait_for_async_insert=1')
+            . (' SETTINGS async_insert=1')
             . (!empty($placeholders) ? ' VALUES (' . implode(', ', $placeholders) . ')' : $values);
     }
 
