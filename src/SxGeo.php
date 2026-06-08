@@ -1,6 +1,6 @@
 <?php
 
-namespace infotech\reference\components\sypexGeo;
+namespace infotech\components;
 
 use RuntimeException;
 
