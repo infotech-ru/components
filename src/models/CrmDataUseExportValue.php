@@ -69,4 +69,5 @@ class CrmDataUseExportValue
     public const CODE_REQUEST_FROM_CALLTOUCH = 'code_request_from_calltouch';
     public const CODE_REQUESTS = 'requests';
     public const CODE_PROCESSED_REQUESTS = 'processed_requests';
+    public const CODE_MISSED_CALL = 'code_missed_call';
 }
