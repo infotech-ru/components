@@ -70,4 +70,5 @@ class CrmDataUseExportValue
     public const CODE_REQUESTS = 'requests';
     public const CODE_PROCESSED_REQUESTS = 'processed_requests';
     public const CODE_MISSED_CALL = 'code_missed_call';
+    public const CODE_YANDEX_CONVERSION = 'yandex_conversion';
 }
