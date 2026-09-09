@@ -16,15 +16,18 @@ class CrmDataUseExportValue
     public const CODE_RETAIL_CASES_ISSUES_WITHOUT_WAREHOUSE_VEHICLES = 'retail_cases_issues_without_warehouse_vehicles';
     public const CODE_RETAIL_CASES_OFFERS = 'retail_cases_offers';
     public const CODE_RETAIL_CASES_1C_CONTRACTS = 'retail_cases_1c_contracts';
+    public const CODE_RETAIL_NEED_CAR = 'retail_need_car';
 
     public const CODE_CORPORATE_CASES = 'corporate_cases';
     public const CODE_CORPORATE_CASE_REQUESTS = 'corporate_case_requests';
     public const CODE_CORPORATE_CASES_ISSUES_WITHOUT_WAREHOUSE_VEHICLES = 'corporate_cases_issues_without_warehouse_vehicles';
     public const CODE_CORPORATE_CASES_OFFERS = 'corporate_cases_offers';
     public const CODE_CORPORATE_CASES_1C_CONTRACTS = 'corporate_cases_1c_contracts';
+    public const CODE_CORPORATE_NEED_CAR = 'corporate_need_car';
 
     public const CODE_TRADE_IN_CASES = 'trade_in_cases';
     public const CODE_TRADE_IN_CASE_REQUESTS = 'trade_in_case_requests';
+    public const string CODE_TRADE_IN_TRANSCRIPT_CAR_BY_VIN_INFOTECH = 'trade_in_transcript_car_by_vin_infotech';
     public const CODE_COMMISSION_CASES = 'commission_cases';
     public const CODE_COMMISSION_CASE_REQUESTS = 'commission_case_requests';
     public const CODE_BUYOUT_CASES = 'buyout_cases';
@@ -35,6 +38,7 @@ class CrmDataUseExportValue
     public const CODE_SALES_USED_CASES = 'sales_used_cases';
     public const CODE_SALES_USED_CASE_REQUESTS = 'sales_used_case_requests';
     public const CODE_SALES_USED_PLANS = 'sales_used_plans';
+    public const CODE_SALES_USED_NEED_CAR = 'sales_used_need_car';
 
     public const CODE_CREDIT_INSURANCE_CASES = 'credit_insurance_cases';
     public const CODE_CREDIT_INSURANCE_CASE_REQUESTS = 'credit_insurance_case_requests';
@@ -71,10 +75,13 @@ class CrmDataUseExportValue
     public const CODE_PROCESSED_REQUESTS = 'processed_requests';
     public const CODE_MISSED_CALL = 'code_missed_call';
     public const CODE_YANDEX_CONVERSION = 'yandex_conversion';
-    public const CODE_SYNC_STOCK = 'sync-stock';
+    public const CODE_SYNC_STOCK = 'sync_stock';
     public const CODE_IS_GET_DISCOUNT = 'is_get_discount';
     public const CODE_LMS_SUPPORT = 'lms_support';
     public const CODE_OFFER_GENERATION_SUPPORT = 'offer_generation_support';
     public const CODE_SOURCE_MAP = 'source_map';
     public const CODE_CANCEL_REASON_MAP = 'cancel_reason_map';
+    public const string CODE_DECRYPT_CAR_EXISTENCE_USED = 'decrypt_car_existence_used';
+    public const string CODE_DECRYPT_CAR_EXISTENCE_NEW = 'decrypt_car_existence_new';
+    public const string CODE_CONFIG_LAST_VERSION = 'config_last_version';
 }
