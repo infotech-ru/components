@@ -84,4 +84,9 @@ class CrmDataUseExportValue
     public const string CODE_DECRYPT_CAR_EXISTENCE_USED = 'decrypt_car_existence_used';
     public const string CODE_DECRYPT_CAR_EXISTENCE_NEW = 'decrypt_car_existence_new';
     public const string CODE_CONFIG_LAST_VERSION = 'config_last_version';
+
+    public const CODE_MAX_POSTER_RETAIL_WAREHOUSE_API = 'max_poster_retail_warehouse_api';
+    public const CODE_MAX_POSTER_USED_WAREHOUSE_API = 'max_poster_used_warehouse_api';
+    public const CODE_MAX_POSTER_TRADE_IN_CASES = 'max_poster_trade_in_cases';
+    public const CODE_MAX_POSTER_LEAD_GENERATION = 'max_poster_lead_generation';
 }
