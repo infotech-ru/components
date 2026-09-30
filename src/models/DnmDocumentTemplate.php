@@ -15,4 +15,5 @@ class DnmDocumentTemplate
     public const TYPE_FORWARDING_RECEIPT = 9;
     public const TYPE_RAPPORT_WARRANTY_TRANSPORT = 10;
     public const TYPE_RECLAMATION_REGISTRY = 11;
+    public const TYPE_TRADE_IN_CERTIFICATE = 12;
 }
