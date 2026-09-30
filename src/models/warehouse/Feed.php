@@ -26,6 +26,7 @@ class Feed
     public const LEGO_CAR_V2 = 20;
     public const KIA_RU = 21;
     public const T_AUTO = 22;
+    public const TRADEDEALER = 23;
 
     public static function getListDealers(): array
     {
@@ -74,6 +75,7 @@ class Feed
             self::YANDEX_XML => 'YML',
             self::KIA_RU => 'Kia.ru',
             self::T_AUTO => 'Т-Авто',
+            self::TRADEDEALER => 'Tradedealer',
         ];
     }
 }
