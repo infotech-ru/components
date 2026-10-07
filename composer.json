@@ -7,8 +7,7 @@
     "ext-pdo": "*",
     "ext-imagick": "*",
     "ext-gd": "*",
-    "phpoffice/phpspreadsheet": "^1.23",
-    "ezyang/htmlpurifier": "4.19"
+    "phpoffice/phpspreadsheet": "^1.23"
   },
   "require-dev": {
     "roave/security-advisories": "dev-latest"
