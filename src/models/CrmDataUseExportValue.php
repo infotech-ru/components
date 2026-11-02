@@ -84,6 +84,18 @@ class CrmDataUseExportValue
     public const string CODE_DECRYPT_CAR_EXISTENCE_USED = 'decrypt_car_existence_used';
     public const string CODE_DECRYPT_CAR_EXISTENCE_NEW = 'decrypt_car_existence_new';
     public const string CODE_CONFIG_LAST_VERSION = 'config_last_version';
+    public const string RETAIL_WAREHOUSE_CONFIG_TEMPLATE = 'retail_warehouse_config_template';
+    public const string USED_WAREHOUSE_CONFIG_TEMPLATE = 'retail_warehouse_config_template';
+    public const string RETAIL_REMOVED_FROM_STOCK_CARS = 'retail_removed_from_stock_cars';
+    public const string RETAIL_CREDIT_INSURANCE_CASE_CREATE = 'retail_credit_insurance_case_create';
+    public const string CORPORATE_CREDIT_INSURANCE_CASE_CREATE = 'corporate_credit_insurance_case_create';
+    public const string USED_CREDIT_INSURANCE_CASE_CREATE = 'used_credit_insurance_case_create';
+    public const string RETAIL_TRADE_IN_CASE_CREATE = 'retail_trade_in_case_create';
+    public const string CORPORATE_TRADE_IN_CASE_CREATE = 'corporate_trade_in_case_create';
+    public const string USED_TRADE_IN_CASE_CREATE = 'used_trade_in_case_create';
+    public const string CREDIT_INSURANCE_CASES_ELT_SEARCH = 'credit_insurance_case_elt_search';
+    public const string CREDIT_INSURANCE_CASES_FAST = 'credit_insurance_case_fast';
+    public const string CODE_CALLTOUCH = 'calltouch';
 
     public const CODE_MAX_POSTER_RETAIL_WAREHOUSE_API = 'max_poster_retail_warehouse_api';
     public const CODE_MAX_POSTER_USED_WAREHOUSE_API = 'max_poster_used_warehouse_api';
