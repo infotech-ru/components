@@ -85,7 +85,7 @@ class CrmDataUseExportValue
     public const string CODE_DECRYPT_CAR_EXISTENCE_NEW = 'decrypt_car_existence_new';
     public const string CODE_CONFIG_LAST_VERSION = 'config_last_version';
     public const string RETAIL_WAREHOUSE_CONFIG_TEMPLATE = 'retail_warehouse_config_template';
-    public const string USED_WAREHOUSE_CONFIG_TEMPLATE = 'retail_warehouse_config_template';
+    public const string USED_WAREHOUSE_CONFIG_TEMPLATE = 'used_warehouse_config_template';
     public const string RETAIL_REMOVED_FROM_STOCK_CARS = 'retail_removed_from_stock_cars';
     public const string RETAIL_CREDIT_INSURANCE_CASE_CREATE = 'retail_credit_insurance_case_create';
     public const string CORPORATE_CREDIT_INSURANCE_CASE_CREATE = 'corporate_credit_insurance_case_create';
