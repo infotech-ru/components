@@ -1,29 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 namespace infotech\components\mailing\contracts;
 
-/**
- * Нужно для реализации связки мейлера с инстансом
- * $vendorId - id зависимости. На CRM - salonId, на DNM - dealerId
- */
+use infotech\components\mailing\dto\MailingLimitsDto;
+use infotech\components\mailing\dto\RecipientsPageDto;
+use infotech\components\mailing\enums\ListType;
+use infotech\components\mailing\value\ListReference;
+use infotech\components\mailing\value\PageRequest;
+
 interface ApiInterface
 {
-    public const string LIST_TYPE_STATIC = 'static';
-    public const string LIST_TYPE_DYNAMIC = 'dynamic';
     public const string KEY_HEADER = 'X-Instance-Key';
     public const string URL_HEADER = 'X-Instance-Url';
 
-    /** @return array{max_recipients: int} */
-    public function getLimits(int $vendorId): array;
+    public function limits(string $vendorId): MailingLimitsDto;
 
-    /** @return list<array{id: string, name: string, type: string}> */
-    public function getLists(int $vendorId, ?string $type = null): array;
+    public function lists(string $vendorId, ?ListType $type = null): array;
 
-    /**
-     * @return list<array{client_id: string, email: string, full_name: string, gender: ?string, variables: array<string, scalar|null>}>
-     */
-    public function getListClients(int $vendorId, int $listId, string $type, string $context): array;
+    public function recipients(
+        string $vendorId,
+        ListReference $list,
+        string $context,
+        PageRequest $page = new PageRequest(),
+    ): RecipientsPageDto;
 
-    /** @return list<array{name: string, placeholder: string, title: string}> */
-    public function getVariables(int $vendorId, string $context): array;
+    public function variables(string $vendorId, string $context): array;
+
+    public function mailboxes(string $vendorId): array;
 }
