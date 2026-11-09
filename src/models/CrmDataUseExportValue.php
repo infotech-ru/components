@@ -96,6 +96,11 @@ class CrmDataUseExportValue
     public const string CREDIT_INSURANCE_CASES_ELT_SEARCH = 'credit_insurance_case_elt_search';
     public const string CREDIT_INSURANCE_CASES_FAST = 'credit_insurance_case_fast';
     public const string CODE_CALLTOUCH = 'calltouch';
+    public const string CODE_API_USAGE = 'api_usage';
+    public const string CODE_CLASSIFIED_USAGE = 'api_classified_usage';
+    public const string CODE_ADD_BRAND_EXISTENCE = 'api_add_brand_existence';
+    public const string CODE_MOSKVICH = 'moskvich';
+    public const string CODE_SPEECH_ANALYTICS = 'speech_analytics';
 
     public const CODE_MAX_POSTER_RETAIL_WAREHOUSE_API = 'max_poster_retail_warehouse_api';
     public const CODE_MAX_POSTER_USED_WAREHOUSE_API = 'max_poster_used_warehouse_api';
