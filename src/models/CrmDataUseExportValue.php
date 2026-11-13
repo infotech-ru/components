@@ -101,6 +101,9 @@ class CrmDataUseExportValue
     public const string CODE_ADD_BRAND_EXISTENCE = 'api_add_brand_existence';
     public const string CODE_MOSKVICH = 'moskvich';
     public const string CODE_SPEECH_ANALYTICS = 'speech_analytics';
+    public const string CODE_TELEPHONY_USAGE = 'telephony_usage';
+    public const string CODE_TELEPHONY_NEW_VERSION = 'telephony_new_version';
+    public const string CODE_TELEPHONY_OLD_VERSION = 'telephony_old_version';
 
     public const CODE_MAX_POSTER_RETAIL_WAREHOUSE_API = 'max_poster_retail_warehouse_api';
     public const CODE_MAX_POSTER_USED_WAREHOUSE_API = 'max_poster_used_warehouse_api';
