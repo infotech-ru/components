@@ -125,13 +125,14 @@ class CrmDataUseExportValue
     public const string CODE_TELEPHONY_OLD_VERSION_MTS = 'telephony_old_version_mts';
     public const string CODE_TELEPHONY_OLD_VERSION_ROSTELECOM = 'telephony_old_version_rostelecom';
     public const string CODE_TELEPHONY_OLD_VERSION_MTS_EXOLVE = 'telephony_old_version_mts_exolve';
-    public const string CODE_TELEPHONY_OLD_VERSION_MTS_BEELINE = 'telephony_old_version_mts_beeline';
+    public const string CODE_TELEPHONY_OLD_VERSION_BEELINE = 'telephony_old_version_beeline';
     public const string CODE_TELEPHONY_OLD_VERSION_CALLTOUCH = 'telephony_old_version_calltouch';
     public const string CODE_TELEPHONY_OLD_VERSION_API = 'telephony_old_version_api';
     public const string CODE_TELEPHONY_OLD_VERSION_OKTELL = 'telephony_old_version_oktell';
     public const string CODE_TELEPHONY_OLD_VERSION_UIS = 'telephony_old_version_uis';
     public const string CODE_TELEPHONY_OLD_VERSION_SIPUNI = 'telephony_old_version_sipuni';
     public const string CODE_TELEPHONY_OLD_VERSION_MOI_ZVONKI = 'telephony_old_version_moi_zvonki';
+    public const string CODE_LOGICSTARS = 'logicstars';
 
     public const CODE_MAX_POSTER_RETAIL_WAREHOUSE_API = 'max_poster_retail_warehouse_api';
     public const CODE_MAX_POSTER_USED_WAREHOUSE_API = 'max_poster_used_warehouse_api';
