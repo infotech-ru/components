@@ -16,4 +16,5 @@ class DnmDocumentTemplate
     public const TYPE_RAPPORT_WARRANTY_TRANSPORT = 10;
     public const TYPE_RECLAMATION_REGISTRY = 11;
     public const TYPE_DAMAGE_REPORT_ACT = 12;
+    public const TYPE_TRADE_IN_CERTIFICATE = 13;
 }
